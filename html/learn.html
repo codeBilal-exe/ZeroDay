@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/">
   <meta name="description" content="ZeroDay Learn — Cybersecurity educational resources.">
   <title>ZeroDay — Learn</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -33,7 +34,7 @@
     .learn-nav-link:hover, .learn-nav-link.active {
       color: var(--zd-action);
       border-left-color: var(--zd-action);
-      background: rgba(21, 150, 56, 0.05);
+      background: color-mix(in srgb, var(--zd-action) 5%, transparent);
     }
     
     @media (max-width: 768px) {
@@ -111,8 +112,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/app.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      checkAuth();
+    document.addEventListener('zd:page-ready', () => {
+  if (!document.querySelector('.learn-nav-link')) return;
+      if (!checkAuth()) return;
       document.getElementById('nav-container').innerHTML = buildNavigation('learn');
       initNavToggle();
 
@@ -141,7 +143,7 @@
           <div class="learn-card" style="cursor:pointer;height:100%;display:flex;flex-direction:column;" onclick="openModule(${item.id})">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;">
               <span class="learn-level level-${item.level}">${item.level}</span>
-              <span class="technical-label" style="font-size:0.6rem;">⏱ ${item.duration}</span>
+              <span class="technical-label" style="font-size:0.6rem;">${zdIcon('clock')} ${item.duration}</span>
             </div>
             <h3 style="font-size:1.1rem;margin-bottom:0.5rem;">${item.title}</h3>
             <p style="font-size:0.85rem;color:var(--zd-muted);flex:1;">${item.description}</p>
@@ -174,7 +176,7 @@
           ${item.topics.map(t => `<li>Understand ${t.toLowerCase()} mechanisms and defenses.</li>`).join('')}
         </ul>
 
-        <div style="margin-top:2rem;padding:1rem;background:rgba(21, 150, 56, 0.05);border:1px solid var(--zd-border);border-radius:var(--radius-md);">
+        <div style="margin-top:2rem;padding:1rem;background:color-mix(in srgb, var(--zd-action) 5%, transparent);border:1px solid var(--zd-border);border-radius:var(--radius-md);">
           <div class="technical-label" style="color:var(--zd-action);margin-bottom:0.5rem;">SIMULATED MODULE</div>
           <p style="font-size:0.85rem;margin:0;color:var(--zd-muted);">This is a conceptual representation for the ZeroDay prototype. In a production environment, this would contain the full interactive lesson content.</p>
         </div>

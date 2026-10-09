@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/">
+  <meta name="description" content="ZeroDay Identity — Your cybersecurity profile and network.">
+  <title>ZeroDay — Identity</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <div id="nav-container"></div>
+
+  <main class="zd-main profile-page">
+    <!-- Hero Header Panel -->
+    <section class="zd-panel profile-hero" id="profile-header" aria-label="Profile overview"></section>
+
+    <!-- Main Content Layout Grid -->
+    <div class="profile-content-grid">
+
+      <!-- Primary Column: User Signals -->
+      <div class="profile-main-column">
+        <section class="zd-panel profile-section profile-signals-section" aria-label="User signals">
+          <div class="zd-panel-header">
+            <span class="zd-panel-title"><i class="bi bi-activity" aria-hidden="true"></i> Signals</span>
+            <span class="profile-section-note">Recent posts</span>
+          </div>
+          <div id="profile-signals" class="signals-list"></div>
+        </section>
+      </div>
+
+      <!-- Secondary Column: Sidebar Widgets -->
+      <aside class="profile-sidebar" aria-label="Profile details">
+        <section class="zd-panel profile-section" id="profile-xp" aria-label="Contributor level"></section>
+        <section class="zd-panel profile-section" id="profile-achievements" aria-label="Achievements"></section>
+        <section class="zd-panel profile-section" id="profile-connections" aria-label="Connections"></section>
+      </aside>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+
+</html>

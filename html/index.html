@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/">
+  <meta name="description" content="ZeroDay — Cybersecurity social and knowledge-sharing platform.">
+  <title>ZeroDay — Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body.login-shell {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      min-height: 100dvh;
+      margin: 0;
+      padding: clamp(0.75rem, 4vw, 2.5rem);
+      background:
+        radial-gradient(ellipse at 8% 8%, color-mix(in srgb, var(--zd-action) 13%, transparent), transparent 36rem),
+        var(--zd-desktop);
+    }
+
+    .login-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+      width: min(100%, 1120px);
+      min-height: min(700px, calc(100dvh - 3rem));
+      overflow: hidden;
+      border: 1px solid var(--zd-border-light);
+      border-bottom-width: 4px;
+      border-radius: 16px;
+      background: var(--zd-surface);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.22), inset 0 1px 0 color-mix(in srgb, var(--zd-text) 12%, transparent);
+    }
+
+    .login-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: clamp(1.5rem, 5vw, 4.5rem);
+      position: relative;
+      z-index: 1;
+      border: 0;
+      border-radius: 0;
+      background: var(--zd-surface);
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+
+    .login-panel h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 3vw, 2.65rem);
+      letter-spacing: -0.06em;
+    }
+
+    .login-intro {
+      margin: 0.45rem 0 2rem;
+      color: var(--zd-muted);
+    }
+
+    .login-panel .zd-form-group {
+      margin-bottom: 1.1rem;
+    }
+
+    .login-panel .zd-label {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .login-panel .zd-label i {
+      color: var(--zd-action);
+    }
+
+    .login-panel .zd-input {
+      min-height: 48px;
+      border-radius: 8px;
+    }
+
+    .login-submit {
+      min-height: 48px;
+      margin-top: 0.45rem;
+      font-weight: 700;
+    }
+
+    .login-footer {
+      margin-top: 1.35rem;
+      text-align: center;
+      color: var(--zd-muted);
+      font-size: 0.88rem;
+    }
+
+    .login-brand-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-width: 0;
+      padding: clamp(1.5rem, 4vw, 3.5rem);
+      border-left: 1px solid var(--zd-border);
+      background:
+        radial-gradient(ellipse at 50% 38%, color-mix(in srgb, var(--zd-action) 13%, transparent), transparent 55%),
+        linear-gradient(145deg, var(--zd-surface-alt), var(--zd-desktop));
+      text-align: center;
+    }
+
+    .login-brand-panel::before,
+    .login-brand-panel::after {
+      position: absolute;
+      width: min(28vw, 310px);
+      aspect-ratio: 1;
+      border: 1px solid color-mix(in srgb, var(--zd-action) 22%, transparent);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .login-brand-panel::before {
+      transform: scale(1.28);
+    }
+
+    .login-brand-panel::after {
+      transform: scale(1.65);
+      opacity: 0.55;
+    }
+
+    .login-logo {
+      position: relative;
+      z-index: 1;
+      width: clamp(92px, 13vw, 148px);
+      aspect-ratio: 1;
+      margin-bottom: clamp(1rem, 3vw, 2rem);
+      border: 1px solid var(--zd-border-light);
+      border-radius: 25%;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+      object-fit: cover;
+    }
+
+    .login-wordmark {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      width: max-content;
+      color: var(--zd-text);
+      font: 700 clamp(3.8rem, 9vw, 7.8rem)/0.77 var(--font-heading);
+      letter-spacing: -0.105em;
+      text-align: left;
+    }
+
+    .login-wordmark span:first-child {
+      color: var(--zd-text);
+    }
+
+    .login-wordmark span.brand-zero {
+      color: var(--zd-action);
+    }
+
+    .login-wordmark > span:last-child {
+      margin-left: 0.27em;
+    }
+
+    .login-brand-tagline {
+      position: relative;
+      z-index: 1;
+      max-width: 17rem;
+      margin-top: 1.7rem;
+      color: var(--zd-muted);
+      font-size: 0.92rem;
+    }
+
+    .auth-theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 3;
+    }
+
+    .login-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.2rem;
+      color: var(--zd-muted);
+      font-size: 0.7rem;
+      text-align: center;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--zd-action);
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--zd-action) 65%, transparent);
+      animation: pulse-status 1.5s infinite ease-in-out;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse-status {
+      0% {
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--zd-action) 75%, transparent);
+        opacity: 1;
+      }
+
+      70% {
+        box-shadow: 0 0 0 8px rgba(232, 138, 74, 0);
+        opacity: 1;
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(232, 138, 74, 0);
+        opacity: 0.7;
+      }
+    }
+
+    .social-link {
+      color: var(--zd-action);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .login-google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      width: 100%;
+      min-height: 48px;
+      margin-top: 0.9rem;
+      border: 1.5px solid var(--zd-action);
+      border-radius: 12px;
+      background: transparent;
+      color: var(--zd-text);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .login-google-btn:hover {
+      background: color-mix(in srgb, var(--zd-action) 8%, transparent);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px color-mix(in srgb, var(--zd-action) 15%, transparent);
+    }
+
+    .login-google-btn svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .social-link:hover {
+      color: var(--zd-highlight);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 760px) {
+      body.login-shell {
+        padding: 0.8rem;
+      }
+
+      .login-layout {
+        grid-template-columns: 1fr;
+        width: min(100%, 520px);
+        min-height: 0;
+        border-radius: 14px;
+      }
+
+      .login-panel {
+        max-width: 100%;
+        padding: clamp(1.2rem, 6vw, 2.2rem);
+      }
+
+      .login-panel h1 {
+        font-size: clamp(1.7rem, 7vw, 2.25rem);
+      }
+
+      .login-intro {
+        margin-bottom: 1.35rem;
+        font-size: 0.96rem;
+      }
+
+      .login-panel .zd-form-group {
+        margin-bottom: 0.85rem;
+      }
+
+      .login-submit,
+      .login-google-btn {
+        min-height: 46px;
+      }
+
+      .login-brand-panel {
+        grid-row: 1;
+        min-height: 200px;
+        padding: 1.1rem 1rem 1.25rem;
+        border-left: 0;
+        border-bottom: 1px solid var(--zd-border);
+      }
+
+      .login-logo {
+        width: 52px;
+        margin-bottom: 0.7rem;
+      }
+
+      .login-wordmark {
+        font-size: clamp(2.5rem, 10vw, 3.2rem);
+        line-height: 0.78;
+        letter-spacing: -0.085em;
+      }
+
+      .login-wordmark > span:last-child {
+        margin-left: 0.27em;
+      }
+
+      .login-brand-tagline {
+        margin-top: 0.7rem;
+        font-size: 0.78rem;
+      }
+
+      .login-brand-panel::before {
+        width: 170px;
+      }
+
+      .login-brand-panel::after {
+        width: 220px;
+      }
+
+      .auth-theme-toggle {
+        top: 0.75rem;
+        right: 0.75rem;
+        transform: scale(0.9);
+      }
+
+      .login-status {
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="login-shell">
+  <button class="theme-switch auth-theme-toggle" type="button" role="switch" aria-checked="false"
+    onclick="toggleTheme()" aria-label="Switch color theme" title="Switch color theme">
+    <span class="theme-switch-sky" aria-hidden="true">
+      <span class="theme-switch-stars"></span>
+      <span class="theme-switch-clouds"></span>
+      <span class="theme-switch-thumb"><i class="bi bi-moon-stars-fill"></i></span>
+    </span>
+  </button>
+
+  <main class="login-layout">
+    <section class="login-panel" aria-labelledby="welcome-title">
+      <h1 id="welcome-title">Welcome back</h1>
+      <p class="login-intro">Sign in to join the conversation.</p>
+
+      <form id="login-form" novalidate>
+        <div class="zd-form-group">
+          <label for="login-username" class="zd-label"><i class="bi bi-person" aria-hidden="true"></i> Username</label>
+          <input type="text" class="zd-input" id="login-username" placeholder="Enter your username"
+            autocomplete="username" required>
+          <div class="zd-error-msg" id="username-error">Username is required.</div>
+        </div>
+
+        <div class="zd-form-group">
+          <label for="login-password" class="zd-label"><i class="bi bi-key" aria-hidden="true"></i> Password</label>
+          <input type="password" class="zd-input" id="login-password" placeholder="Enter your password"
+            autocomplete="current-password" required>
+          <div class="zd-error-msg" id="password-error">Password is required.</div>
+        </div>
+
+        <div class="zd-error-msg" id="auth-error"
+          style="margin-bottom:1rem;padding:0.75rem;background:color-mix(in srgb,var(--zd-error) 9%,transparent);border:1px solid var(--zd-error);border-radius:var(--radius-sm);">
+          Invalid username or password.
+        </div>
+
+        <button type="submit" class="btn-zd-primary w-100 login-submit" id="login-submit"><i
+            class="bi bi-arrow-right-circle" aria-hidden="true"></i> Sign in</button>
+
+        <button type="button" class="login-google-btn" aria-label="Login with Google">
+          <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+            <path fill="#FFC107"
+              d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.8-6.1 8-11.3 8-6.9 0-12.5-5.6-12.5-12.5S17.1 11.5 24 11.5c3.1 0 5.9 1.1 8.1 3l5.7-5.7C33.8 4.7 29.2 2.5 24 2.5 12.4 2.5 3 11.9 3 23.5S12.4 44.5 24 44.5c11.3 0 20.8-8.3 20.8-20.9 0-1.4-.2-2.8-.5-4.1z" />
+            <path fill="#FF3D00"
+              d="M6.8 14.7l7.1 5.2C15.2 16.7 19.2 14 24 14c3.1 0 5.9 1.1 8.1 3l5.7-5.7C33.8 4.7 29.2 2.5 24 2.5 16 2.5 9.2 6.8 6.8 14.7z" />
+            <path fill="#4CAF50"
+              d="M24 44.5c5.6 0 10.3-1.9 13.8-5.1l-6.4-5.5c-1.8 1.2-4.1 1.9-7.4 1.9-5.2 0-9.7-3.2-11.3-7.7l-6.5 5.1C5.8 38.3 13.9 44.5 24 44.5z" />
+            <path fill="#1976D2"
+              d="M43.6 20.5H42V20H24v8h11.3c-1.1 3.2-3.9 5.4-7.5 5.4-2.5 0-4.8-1.1-6.2-2.9l-6.2 4.8c2.8 3.5 7.2 5.7 12.4 5.7 7.9 0 14.5-6.1 14.5-13.7 0-1.4-.2-2.8-.5-4.1z"
+              opacity="0.15" />
+            <path fill="#1E88E5"
+              d="M33.5 29.8c-1.8 1.2-4.1 1.9-7.5 1.9-5.2 0-9.7-3.2-11.3-7.7l-6.5 5.1c2.7 5.9 9.1 10.2 17.8 10.2 6.1 0 11.3-2.4 14.9-6.3l-7.4-3.2z" />
+          </svg>
+          <span>Login with Google</span>
+        </button>
+      </form>
+
+      <div class="login-status" id="system-status"><span class="status-indicator" aria-hidden="true"></span><span>Ready
+          when you are</span></div>
+    </section>
+
+    <aside class="login-brand-panel" aria-label="ZeroDay community">
+      <img class="login-logo" src="assets/icons/ZeroDay-Logo.png" alt="ZeroDay logo">
+      <div class="login-wordmark" aria-label="ZER0DAY"><span>ZER<span class="brand-zero">0</span></span><span>DAY</span></div>
+      <p class="login-brand-tagline">Knowledge is your first line of defense.</p>
+    </aside>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/login.js"></script>
+</body>
+
+</html>

@@ -2,10 +2,11 @@
    ZeroDay — Login Logic (login.js)
    ============================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('zd:page-ready', () => {
+  if (!document.getElementById('login-form')) return;
   // If already logged in, redirect to home
   if (sessionStorage.getItem('zd_logged_in')) {
-    window.location.href = 'home.html';
+    navigateTo('home.html');
     return;
   }
 
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Redirect after brief delay
       setTimeout(() => {
-        window.location.href = 'home.html';
+        navigateTo('home.html');
       }, 800);
     } else {
       // Login failed
@@ -83,9 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
       passwordInput.classList.add('is-invalid');
 
       // Shake animation
-      const panel = document.querySelector('.login-panel');
-      panel.style.animation = 'shake 0.4s ease';
-      setTimeout(() => panel.style.animation = '', 400);
+      const panel = document.querySelector('.auth-card');
+      if (panel) {
+        panel.style.animation = 'shake 0.4s ease';
+        setTimeout(() => panel.style.animation = '', 400);
+      }
     }
   });
 });

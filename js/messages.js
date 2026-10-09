@@ -4,8 +4,9 @@
 
 let currentActiveChatUserId = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-  checkAuth();
+document.addEventListener('zd:page-ready', () => {
+  if (!document.getElementById('messaging-workspace')) return;
+  if (!checkAuth()) return;
 
   document.getElementById('nav-container').innerHTML = buildNavigation('messages');
   initNavToggle();
@@ -56,13 +57,22 @@ function renderChannelsList(filterQuery = '') {
   const partners = getConversationPartners(currentUser.id);
   const container = document.getElementById('channels-list');
   const query = filterQuery.toLowerCase();
+  const unreadBadge = document.getElementById('inbox-unread-count');
+  const unreadTotal = partners.reduce((total, partner) => total + partner.unreadCount, 0);
+  if (unreadBadge) {
+    unreadBadge.textContent = unreadTotal;
+    unreadBadge.classList.toggle('has-unread', unreadTotal > 0);
+    unreadBadge.setAttribute('aria-label', `${unreadTotal} unread messages`);
+  }
 
-  const filtered = partners.filter(p => p.name.toLowerCase().includes(query) || p.role.toLowerCase().includes(query));
+  const filtered = partners.filter(p =>
+      !isBlocked(p.id, currentUser.id) &&
+      (p.name.toLowerCase().includes(query) || (p.role || '').toLowerCase().includes(query)));
 
   if (filtered.length === 0) {
     container.innerHTML = `
-      <div style="padding:1.5rem;text-align:center;color:var(--zd-muted);font-size:0.85rem;">
-        No channels found.
+      <div class="channels-empty">
+        No conversations found.
       </div>
     `;
     return;
@@ -78,19 +88,13 @@ function renderChannelsList(filterQuery = '') {
     if (p.lastMessage.fromId === currentUser.id) preview = 'You: ' + preview;
 
     return `
-      <div class="channel-item ${isActive ? 'active' : ''}" onclick="openChat(${p.id})">
-        ${renderAvatar(p, 'avatar-md')}
-        <div style="flex:1;min-width:0;">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.2rem;">
-            <div style="font-weight:600;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;${isUnread ? 'color:var(--zd-text);' : ''}">${p.name}</div>
-            <div class="technical-label" style="font-size:0.55rem;flex-shrink:0;">${timeAgo(p.lastMessage.timestamp)}</div>
-          </div>
-          <div style="font-size:0.75rem;color:var(--zd-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;${isUnread ? 'font-weight:600;color:var(--zd-text);' : ''}">
-            ${preview}
-          </div>
-        </div>
-        ${isUnread ? '<div class="channel-unread"></div>' : ''}
-      </div>
+      <button class="channel-item ${isActive ? 'active' : ''} ${isUnread ? 'unread' : ''}" type="button" onclick="openChat(${p.id})" aria-current="${isActive ? 'true' : 'false'}">
+        <span class="channel-avatar-wrap">${renderAvatar(p, 'avatar-md')}<span class="channel-avatar-status ${p.status}" aria-hidden="true"></span></span>
+        <span class="channel-copy">
+          <span class="channel-topline"><span class="channel-name">${escapeHTML(p.name)}</span><span class="channel-time">${timeAgo(p.lastMessage.timestamp)}</span></span>
+          <span class="channel-bottomline"><span class="channel-preview">${escapeHTML(preview)}</span>${isUnread ? '<span class="channel-unread" aria-label="Unread"></span>' : ''}</span>
+        </span>
+      </button>
     `;
   }).join('');
 }
@@ -112,6 +116,7 @@ function openChat(partnerId) {
   if (!partner) return;
 
   currentActiveChatUserId = partnerId;
+  closeChatMenu();
 
   // Layout adjustments for mobile
   document.getElementById('messaging-workspace').classList.add('chat-active');
@@ -155,20 +160,31 @@ function renderChatMessages() {
   
   if (convo.length === 0) {
     container.innerHTML = `
-      <div style="text-align:center;color:var(--zd-muted);font-size:0.85rem;margin-top:2rem;">
-        <div class="technical-label mb-sm">CHANNEL ESTABLISHED</div>
-        <p>No messages yet. Messages are end-to-end encrypted (simulated).</p>
+      <div class="chat-empty-state chat-empty-thread">
+        <div class="chat-empty-icon"><i class="bi bi-chat-dots" aria-hidden="true"></i></div>
+        <span class="messages-eyebrow">A NEW CONVERSATION</span>
+        <p>Send the first message to get the conversation started.</p>
       </div>
     `;
   } else {
-    container.innerHTML = convo.map(m => {
+    container.innerHTML = '<div class="chat-day-marker"><span>Recent messages</span></div>' + convo.map(m => {
       const isSent = m.fromId === currentUser.id;
+      const imagePost = m.id === 3 ? posts.find(post => post.id === 2) : null;
+      const sharedPost = m.id === 4 ? posts.find(post => post.id === 1) : null;
+      const showVoiceNote = m.id === 8;
+      const showReactions = m.id === 3 || m.id === 4;
       return `
+        <div class="msg-row ${isSent ? 'sent' : 'received'}">
         <div class="msg-bubble ${isSent ? 'sent' : 'received'}">
-          <div>${m.content}</div>
-          <div class="msg-time" style="text-align:${isSent ? 'right' : 'left'};">
+          <div class="msg-copy">${escapeHTML(m.content)}</div>
+          ${imagePost ? `<div class="message-image-attachment"><img src="${imagePost.image}" alt="Image shared in this conversation"><span>${zdIcon('image')} Shared image</span></div>` : ''}
+          ${sharedPost ? `<div class="shared-post-preview"><span class="shared-post-label">${zdIcon('reply')} Shared signal</span><strong>${sharedPost.title}</strong><span>${sharedPost.category} · ${getUserById(sharedPost.authorId).name}</span></div>` : ''}
+          ${showVoiceNote ? `<div class="voice-note-preview"><span class="voice-note-play">${zdIcon('play-fill')}</span><span class="voice-wave" aria-hidden="true">${'<i></i>'.repeat(18)}</span><span class="voice-note-duration">0:18</span></div>` : ''}
+          ${showReactions ? `<div class="message-reaction-preview"><span>${zdIcon('heart-fill')} 2</span><span>${zdIcon('hand-thumbs-up-fill')} 1</span></div>` : ''}
+          <div class="msg-time">
             ${timeAgo(m.timestamp)} ${isSent ? (m.read ? '· Read' : '· Delivered') : ''}
           </div>
+        </div>
         </div>
       `;
     }).join('');
@@ -183,7 +199,7 @@ function sendMessage(toId, content) {
   const currentUser = getCurrentUser();
   
   const newMsg = {
-    id: messages.length + 1,
+    id: Date.now() * 1000 + Math.floor(Math.random() * 1000),
     fromId: currentUser.id,
     toId: toId,
     content: content,
@@ -192,6 +208,7 @@ function sendMessage(toId, content) {
   };
 
   messages.push(newMsg);
+  sendRealtimeEvent({type: 'message:send', toId, message: newMsg});
 
   renderChatMessages();
   renderChannelsList(document.getElementById('channel-search').value);
@@ -200,15 +217,79 @@ function sendMessage(toId, content) {
 /** Back to channels list (mobile) */
 function backToChannels() {
   document.getElementById('messaging-workspace').classList.remove('chat-active');
+  document.getElementById('active-chat').style.display = 'none';
+  document.getElementById('chat-empty-state').style.display = 'flex';
   currentActiveChatUserId = null;
   renderChannelsList(document.getElementById('channel-search').value);
 }
+
+function toggleChatMenu(event) {
+  event.stopPropagation();
+  const menu = document.getElementById('chat-more-menu');
+  const trigger = document.getElementById('chat-more-toggle');
+  if (!menu || !trigger) return;
+  const expanded = trigger.getAttribute('aria-expanded') === 'true';
+  menu.hidden = expanded;
+  trigger.setAttribute('aria-expanded', String(!expanded));
+  if (!expanded) menu.querySelector('button')?.focus();
+}
+
+function closeChatMenu() {
+  const menu = document.getElementById('chat-more-menu');
+  const trigger = document.getElementById('chat-more-toggle');
+  if (menu) menu.hidden = true;
+  trigger?.setAttribute('aria-expanded', 'false');
+}
+
+function removeChatFriend() {
+  const currentUser = getCurrentUser();
+  const target = getUserById(currentActiveChatUserId);
+  if (!target) return;
+  currentUser.connections = currentUser.connections.filter(id => id !== target.id);
+  target.connections = target.connections.filter(id => id !== currentUser.id);
+  const ratingIndex = connectionRatings.findIndex(
+      rating => rating.fromId === currentUser.id && rating.toId === target.id);
+  if (ratingIndex !== -1) connectionRatings.splice(ratingIndex, 1);
+  closeChatMenu();
+  renderChannelsList(document.getElementById('channel-search').value);
+  showToast(`${target.name} removed from your connections.`, 'success');
+}
+
+function blockChatUser() {
+  const currentUser = getCurrentUser();
+  const target = getUserById(currentActiveChatUserId);
+  if (!target) return;
+  const alreadyBlocked = blockedUsers.some(
+      entry => entry.userId === currentUser.id && entry.blockedId === target.id);
+  if (!alreadyBlocked) {
+    blockedUsers.push({userId: currentUser.id, blockedId: target.id});
+    localStorage.setItem('zd_blocked_users', JSON.stringify(blockedUsers));
+  }
+  currentUser.connections = currentUser.connections.filter(id => id !== target.id);
+  target.connections = target.connections.filter(id => id !== currentUser.id);
+  closeChatMenu();
+  backToChannels();
+  showToast(`${target.name} has been blocked.`, 'success');
+}
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('.chat-more-wrap')) closeChatMenu();
+});
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  const trigger = document.getElementById('chat-more-toggle');
+  if (trigger?.getAttribute('aria-expanded') === 'true') {
+    closeChatMenu();
+    trigger.focus();
+  }
+});
 
 /** Open modal to start new chat */
 function openNewChatModal() {
   const currentUser = getCurrentUser();
   // Allow messaging anyone, but sort connections first
-  let targetUsers = users.filter(u => u.id !== currentUser.id);
+  let targetUsers = users.filter(
+      u => u.id !== currentUser.id && !isBlocked(u.id, currentUser.id));
   
   targetUsers.sort((a, b) => {
     const aConn = currentUser.connections.includes(a.id);
@@ -221,8 +302,8 @@ function openNewChatModal() {
   const select = document.getElementById('new-chat-target');
   select.innerHTML = targetUsers.map(u => {
     const isConn = currentUser.connections.includes(u.id);
-    return `<option value="${u.id}" style="padding:0.75rem 1rem;border-bottom:1px solid var(--zd-border-light);cursor:pointer;">
-      ${u.name} ${isConn ? '(Connection)' : ''} — ${u.role}
+    return `<option value="${u.id}">
+      ${escapeHTML(u.name)} ${isConn ? '· Connection' : ''}
     </option>`;
   }).join('');
 

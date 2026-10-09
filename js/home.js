@@ -2,20 +2,38 @@
    ZeroDay — Home / Security Signals (home.js)
    ============================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
-  checkAuth();
+document.addEventListener('zd:page-ready', () => {
+  if (!document.getElementById('signals-feed')) return;
+  if (!checkAuth()) return;
 
   // Inject navigation
   document.getElementById('nav-container').innerHTML = buildNavigation('home');
   initNavToggle();
 
+  currentQuery = '';
+  const searchInput = document.getElementById('home-feed-search');
+  const clearSearchButton = document.getElementById('home-search-clear');
+  searchInput?.addEventListener('input', () => {
+    currentQuery = searchInput.value.trim().toLowerCase();
+    clearSearchButton.hidden = !currentQuery;
+    renderFeed(currentFilter);
+  });
+  clearSearchButton?.addEventListener('click', () => {
+    searchInput.value = '';
+    currentQuery = '';
+    clearSearchButton.hidden = true;
+    renderFeed(currentFilter);
+    searchInput.focus();
+  });
+
   // Render feed
   renderFeed('all');
-  renderSidebar();
+  renderThreatTicker();
   setupShareTargetToggle();
 });
 
 let currentFilter = 'all';
+let currentQuery = '';
 
 /** Render signal feed */
 function renderFeed(filter) {
@@ -28,11 +46,26 @@ function renderFeed(filter) {
     feedPosts = feedPosts.filter(p => p.category === filter);
   }
 
+  if (currentQuery) {
+    feedPosts = feedPosts.filter(post => {
+      const author = getUserById(post.authorId);
+      const searchable = [
+        post.title,
+        post.content,
+        post.category,
+        post.risk,
+        author?.name,
+        author?.username
+      ].filter(Boolean).join(' ').toLowerCase();
+      return searchable.includes(currentQuery);
+    });
+  }
+
   if (feedPosts.length === 0) {
     feed.innerHTML = `
       <div class="empty-state">
-        <div class="empty-state-icon">◈</div>
-        <div class="empty-state-text">No signals found${filter !== 'all' ? ` for category "${filter}"` : ''}.</div>
+        <div class="empty-state-icon">${zdIcon('activity')}</div>
+        <div class="empty-state-text">${currentQuery ? 'No posts match your search.' : `No signals found${filter !== 'all' ? ` for category "${filter}"` : ''}.`}</div>
       </div>
     `;
     return;
@@ -50,64 +83,24 @@ function filterSignals(filter, tabEl) {
   renderFeed(filter);
 }
 
-/** Render sidebar */
-function renderSidebar() {
-  const currentUser = getCurrentUser();
-
-  // Active Threats
-  const threatsContainer = document.getElementById('sidebar-threats');
-  const criticalThreats = threatWatchItems.filter(t => t.severity === 'critical' || t.severity === 'high').slice(0, 3);
-  threatsContainer.innerHTML = criticalThreats.map(t => `
-    <div class="threat-item" style="padding:0.6rem;margin-bottom:0.4rem;">
-      <div class="threat-severity severity-${t.severity}"></div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:0.8rem;font-weight:600;margin-bottom:0.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${t.title}</div>
-        <div class="technical-label" style="font-size:0.55rem;">${t.severity.toUpperCase()} · ${t.category}</div>
-      </div>
-    </div>
-  `).join('');
-
-  // Online Connections
-  const onlineContainer = document.getElementById('sidebar-online');
-  const onlineConnections = currentUser.connections
-    .map(id => getUserById(id))
-    .filter(u => u && u.status === 'online');
-
-  if (onlineConnections.length === 0) {
-    onlineContainer.innerHTML = '<div class="text-muted-zd" style="font-size:0.8rem;padding:0.5rem 0;">No connections online.</div>';
-  } else {
-    onlineContainer.innerHTML = onlineConnections.map(u => `
-      <div style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0;border-bottom:1px solid var(--zd-border);">
-        ${renderAvatar(u, 'avatar-xs')}
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:0.8rem;font-weight:500;">${u.name}</div>
-          <div class="technical-label" style="font-size:0.55rem;">${u.role}</div>
-        </div>
-        <span class="zd-status-dot online"></span>
-      </div>
-    `).join('');
+/** Render a continuous threat update marquee above the feed. */
+function renderThreatTicker() {
+  const container = document.getElementById('threat-ticker');
+  const activeThreats = threatWatchItems.filter(t => !['low', 'info'].includes(t.severity));
+  if (!container) return;
+  if (!activeThreats.length) {
+    container.remove();
+    return;
   }
-
-  // Stats
-  const statsContainer = document.getElementById('sidebar-stats');
-  const totalSignals = posts.filter(p => p.authorId === currentUser.id).length;
-  const totalConnections = currentUser.connections.length;
-  const pendingReqs = connectionRequests.filter(r => r.toId === currentUser.id && r.status === 'pending').length;
-
-  statsContainer.innerHTML = `
-    <div class="col-4 stat-block">
-      <div class="stat-value">${totalSignals}</div>
-      <div class="stat-label">Signals</div>
-    </div>
-    <div class="col-4 stat-block" style="border-left:1px solid var(--zd-border);border-right:1px solid var(--zd-border);">
-      <div class="stat-value">${totalConnections}</div>
-      <div class="stat-label">Connections</div>
-    </div>
-    <div class="col-4 stat-block">
-      <div class="stat-value">${pendingReqs}</div>
-      <div class="stat-label">Pending</div>
-    </div>
-  `;
+  const items = activeThreats.map(item => `
+    <span class="threat-marquee-item"><b class="severity-${item.severity}">${item.severity}</b><span>${item.title}</span><small>${item.category}</small></span>
+    <span class="threat-marquee-separator" aria-hidden="true"></span>`).join('');
+  container.innerHTML = `
+    <section class="threat-marquee" aria-label="${activeThreats.length} current threat updates">
+      <div class="threat-marquee-status"><span>${zdIcon('activity')} CURRENT UPDATES</span><strong>${activeThreats.length} ACTIVE</strong></div>
+      <div class="threat-marquee-window" aria-live="off"><div class="threat-marquee-track"><div class="threat-marquee-sequence">${items}</div><div class="threat-marquee-sequence" aria-hidden="true">${items}</div></div></div>
+      <a class="threat-marquee-link" href="threat-watch.html">Threat Watch ${zdIcon('arrow-up-right')}</a>
+    </section>`;
 }
 
 /** Toggle selected connections list visibility */
@@ -189,14 +182,14 @@ function submitNewSignal() {
     sharedWith = selected;
   }
 
-  // Handle optional image upload
+  // Handle an optional image or video upload.
   const imageInput = document.getElementById('signal-image');
   const file = imageInput ? imageInput.files[0] : null;
 
-  const createPostAndFinish = (imageUrl) => {
+  const createPostAndFinish = (mediaData, mediaFile) => {
     // Create new post
     const newPost = {
-      id: posts.length + 1,
+      id: Date.now() * 1000 + Math.floor(Math.random() * 1000),
       authorId: getCurrentUser().id,
       category: category,
       risk: risk,
@@ -209,11 +202,14 @@ function submitNewSignal() {
       reactions: {}
     };
 
-    if (imageUrl) {
-      newPost.image = imageUrl;
+    if (mediaData && mediaFile) {
+      newPost.media = mediaData;
+      newPost.mediaType = mediaFile.type.startsWith('video/') ? 'video' : 'image';
+      newPost.mediaMime = mediaFile.type;
     }
 
     posts.unshift(newPost);
+    sendRealtimeEvent({type: 'post:create', post: newPost});
 
     // Close modal
     const modal = bootstrap.Modal.getInstance(document.getElementById('newSignalModal'));
@@ -228,11 +224,12 @@ function submitNewSignal() {
   if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      createPostAndFinish(e.target.result);
+      createPostAndFinish(e.target.result, file);
     };
+    reader.onerror = () => showToast('That file could not be loaded. Please choose another.', 'error');
     reader.readAsDataURL(file);
   } else {
-    createPostAndFinish(null);
+    createPostAndFinish(null, null);
   }
 }
 

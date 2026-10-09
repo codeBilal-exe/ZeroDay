@@ -2,8 +2,9 @@
    ZeroDay — Connections / Network (connections.js)
    ============================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
-  checkAuth();
+document.addEventListener('zd:page-ready', () => {
+  if (!document.getElementById('tab-connections')) return;
+  if (!checkAuth()) return;
 
   document.getElementById('nav-container').innerHTML = buildNavigation('connections');
   initNavToggle();
@@ -49,7 +50,7 @@ function renderConnections() {
   if (connections.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-state-icon">◇</div>
+        <div class="empty-state-icon">${zdIcon('people')}</div>
         <div class="empty-state-text">No connections yet. Start building your security network!</div>
       </div>
     `;
@@ -87,7 +88,7 @@ function renderConnections() {
             <!-- Actions -->
             <div style="display:flex;gap:0.4rem;flex-wrap:wrap;">
               <button class="btn-zd-secondary btn-zd-sm" onclick="openRatingModal(${c.id})">Rate</button>
-              <a href="messages.html?to=${c.id}" class="btn-zd-secondary btn-zd-sm">Message</a>
+              <a href="messages.html?to=${c.id}" class="btn-zd-secondary btn-zd-sm">${zdIcon('chat-left-text')} Message</a>
               <button class="btn-zd-danger btn-zd-sm" onclick="removeConnection(${c.id})">Remove</button>
             </div>
           </div>
@@ -115,7 +116,7 @@ function renderPending() {
   html += `
     <div class="zd-panel mb-lg">
       <div class="zd-panel-header">
-        <span class="zd-panel-title">↓ Incoming Requests (${incoming.length})</span>
+        <span class="zd-panel-title">${zdIcon('person-plus')} Incoming requests (${incoming.length})</span>
       </div>
   `;
 
@@ -126,16 +127,17 @@ function renderPending() {
       const sender = getUserById(req.fromId);
       if (!sender) return;
       html += `
-        <div class="user-card mb-sm">
-          <a href="profile.html?id=${sender.id}">${renderAvatar(sender, 'avatar-md')}</a>
-          <div class="user-card-info">
-            <div class="user-card-name">${sender.name}</div>
-            <div class="technical-label" style="font-size:0.55rem;">${timeAgo(req.timestamp)}</div>
+        <div class="request-id-card">
+          <div class="request-id-top"><span>ZER<span class="brand-zero">0</span>DAY · MEMBER ACCESS</span><span class="request-id-code">ZD-${String(sender.id).padStart(4, '0')}</span></div>
+          <div class="request-id-main">
+            <a href="profile.html?id=${sender.id}">${renderAvatar(sender, 'avatar-xl')}</a>
+            <div class="request-id-details"><a class="request-id-name" href="profile.html?id=${sender.id}">${sender.name}</a><span>@${sender.username}</span><p>${sender.interests.slice(0, 3).join(' · ') || 'Community member'}</p><small>LEVEL ${sender.level} · ${timeAgo(req.timestamp)}</small></div>
+            <span class="zd-status-dot ${sender.status}" title="${sender.status}"></span>
           </div>
-          <div style="display:flex;gap:0.35rem;">
-            <button class="btn-zd-primary btn-zd-sm" onclick="acceptRequest(${req.fromId})">Accept</button>
+          <div class="request-id-actions">
+            <button class="btn-zd-primary btn-zd-sm" onclick="acceptRequest(${req.fromId})">Accept request</button>
             <button class="btn-zd-secondary btn-zd-sm" onclick="rejectRequest(${req.fromId})">Decline</button>
-            <button class="btn-zd-danger btn-zd-sm" onclick="ignoreRequest(${req.fromId})" title="Block/Ignore this user">Block</button>
+            <button class="btn-zd-danger btn-zd-sm" onclick="ignoreRequest(${req.fromId})" title="Block or ignore this member">Block</button>
           </div>
         </div>
       `;
@@ -147,7 +149,7 @@ function renderPending() {
   html += `
     <div class="zd-panel">
       <div class="zd-panel-header">
-        <span class="zd-panel-title">↑ Sent Requests (${outgoing.length})</span>
+        <span class="zd-panel-title">${zdIcon('send')} Sent requests (${outgoing.length})</span>
       </div>
   `;
 
@@ -187,7 +189,7 @@ function renderFindPeople() {
   if (nonConnections.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-state-icon">◎</div>
+        <div class="empty-state-icon">${zdIcon('person-lines-fill')}</div>
         <div class="empty-state-text">You're connected with everyone in the network!</div>
       </div>
     `;
@@ -197,7 +199,7 @@ function renderFindPeople() {
   container.innerHTML = `
     <!-- Search -->
     <div class="zd-search mb-lg" style="max-width:400px;">
-      <span class="search-icon">◎</span>
+      <span class="search-icon">${zdIcon('search')}</span>
       <input type="text" class="zd-input" id="find-search" placeholder="Search by name..." oninput="filterPeople()" style="padding-left:2.5rem;">
     </div>
 
@@ -226,7 +228,7 @@ function renderFindPeople() {
               ? '<button class="btn-zd-danger btn-zd-sm" disabled>Blocked</button>'
               : pending
                 ? '<button class="btn-zd-secondary btn-zd-sm" disabled>Request Sent</button>'
-                : `<button class="btn-zd-primary btn-zd-sm" onclick="sendRequest(${u.id})" id="connect-btn-${u.id}">◇ Connect</button>`
+                : `<button class="btn-zd-primary btn-zd-sm" onclick="sendRequest(${u.id})" id="connect-btn-${u.id}">${zdIcon('person-plus')} Connect</button>`
             }
           </div>
         </div>
@@ -259,12 +261,14 @@ function sendRequest(targetId) {
     return;
   }
 
-  connectionRequests.push({
+  const request = {
     fromId: currentUser.id,
     toId: targetId,
     status: 'pending',
     timestamp: new Date()
-  });
+  };
+  connectionRequests.push(request);
+  sendRealtimeEvent({type: 'connection:request', toId: targetId, request});
 
   // Update button
   const btn = document.getElementById(`connect-btn-${targetId}`);
@@ -326,6 +330,7 @@ function ignoreRequest(fromId) {
   // Add to blocked list
   if (!isBlocked(fromId, currentUser.id)) {
     blockedUsers.push({ userId: currentUser.id, blockedId: fromId });
+    localStorage.setItem('zd_blocked_users', JSON.stringify(blockedUsers));
   }
 
   renderAllTabs();
@@ -387,15 +392,15 @@ function openRatingModal(targetId) {
     <div class="rating-group" style="justify-content:center;" id="rating-options">
       <div class="rating-option rating-stupid ${currentRating === 'stupid' ? 'selected' : ''}"
            data-rating="stupid" onclick="selectRating(this)">
-        ✕ Stupid
+        ${zdIcon('emoji-neutral')} Stupid
       </div>
       <div class="rating-option rating-cool ${currentRating === 'cool' ? 'selected' : ''}"
            data-rating="cool" onclick="selectRating(this)">
-        ◈ Cool
+        ${zdIcon('hand-thumbs-up')} Cool
       </div>
       <div class="rating-option rating-trustworthy ${currentRating === 'trustworthy' ? 'selected' : ''}"
            data-rating="trustworthy" onclick="selectRating(this)">
-        ★ Trustworthy
+        ${zdIcon('award')} Trustworthy
       </div>
     </div>
   `;
