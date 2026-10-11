@@ -170,8 +170,7 @@ h2,
 h3,
 h4,
 h5,
-h6,
-.heading {
+h6 {
   font-family: var(--font-heading);
   font-weight: 600;
   color: var(--zd-text);
@@ -188,7 +187,6 @@ h3 {
   font-size: 1.25rem;
 }
 
-.mono,
 .technical-label {
   font-family: var(--font-mono);
   font-size: 0.8rem;
@@ -199,22 +197,6 @@ h3 {
 
 .text-muted-zd {
   color: var(--zd-muted) !important;
-}
-
-.text-action {
-  color: var(--zd-action) !important;
-}
-
-.text-highlight {
-  color: var(--zd-highlight) !important;
-}
-
-.text-error {
-  color: var(--zd-error) !important;
-}
-
-.text-warning {
-  color: var(--zd-warning) !important;
 }
 
 /* ---------- Scrollbar ---------- */
@@ -383,39 +365,6 @@ a:hover {
   margin-bottom: 0.65rem;
 }
 
-.page-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--zd-muted);
-}
-
-.page-status::before {
-  content: "";
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--zd-action) 12%, transparent);
-}
-
-.zd-grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-lg);
-}
-
-.zd-grid-3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--space-lg);
-}
-
 .zd-sidebar-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.8fr) minmax(260px, 340px);
@@ -426,17 +375,6 @@ a:hover {
 .home-layout {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.profile-layout {
-  grid-template-columns: minmax(0, 1fr) 320px;
-}
-
-.profile-summary {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-  flex-wrap: wrap;
 }
 
 .profile-meta {
@@ -464,10 +402,6 @@ a:hover {
   border-top: 1px solid var(--zd-border);
   margin-top: 1.25rem;
   padding-top: 1rem;
-}
-
-.profile-stat-grid .stat-block {
-  min-height: 78px;
 }
 
 /* ---------- ZD Panel (replaces generic cards) ---------- */
@@ -630,20 +564,6 @@ a:hover {
 .signal-author-name {
   font-weight: 600;
   font-size: 0.9rem;
-}
-
-.signal-author-role {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--zd-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.signal-time {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--zd-muted);
 }
 
 .signal-body {
@@ -875,26 +795,6 @@ a:hover {
 }
 
 /* ---------- Badge / Status ---------- */
-.zd-badge {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.2rem 0.55rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-}
-
-.zd-badge-online {
-  background: color-mix(in srgb, var(--color-success) 15%, transparent);
-  color: var(--color-success);
-}
-
-.zd-badge-offline {
-  background: color-mix(in srgb, var(--zd-muted) 13%, transparent);
-  color: var(--zd-muted);
-}
-
 .zd-status-dot {
   width: 8px;
   height: 8px;
@@ -964,14 +864,6 @@ a:hover {
   font-size: 0.95rem;
 }
 
-.user-card-role {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--zd-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
 /* ---------- Rating Stars ---------- */
 .rating-group {
   display: flex;
@@ -1024,11 +916,6 @@ a:hover {
 }
 
 /* ---------- Messages / Secure Channels ---------- */
-.channel-list {
-  border-right: 1px solid var(--zd-border);
-  overflow-y: auto;
-}
-
 .channel-item {
   display: flex;
   align-items: center;
@@ -1086,26 +973,6 @@ a:hover {
 }
 
 /* ---------- Threat Watch Items ---------- */
-.threat-item {
-  display: flex;
-  gap: var(--space-md);
-  padding: var(--space-md);
-  border: 1px solid var(--zd-border);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-sm);
-  transition: all var(--transition-fast);
-}
-
-.threat-item:hover {
-  background: var(--zd-surface-alt);
-}
-
-.threat-severity {
-  width: 4px;
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-
 .severity-critical {
   background: var(--zd-error);
 }
@@ -1175,21 +1042,6 @@ a:hover {
   transition: width var(--transition-slow);
 }
 
-/* ---------- Achievement Badge ---------- */
-.achievement {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.25rem 0.6rem;
-  background: color-mix(in srgb, var(--zd-action) 7%, transparent);
-  border: 1px solid var(--zd-border);
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--zd-muted);
-  letter-spacing: 0.04em;
-}
-
 /* ---------- Toast / Notification ---------- */
 .zd-toast {
   position: fixed;
@@ -1247,35 +1099,6 @@ a:hover {
 }
 
 /* ---------- Login Page ---------- */
-.login-container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.login-bg-grid {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    linear-gradient(
-      color-mix(in srgb, var(--zd-action) 6%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--zd-action) 6%, transparent) 1px,
-      transparent 1px
-    );
-  background-size: 40px 40px;
-  pointer-events: none;
-}
-
 .login-panel {
   background: rgba(15, 24, 21, 0.6);
   border: 1px solid var(--glass-border);
@@ -1288,27 +1111,6 @@ a:hover {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 22px 54px rgba(1, 6, 5, 0.38);
-}
-
-.login-brand {
-  text-align: center;
-  margin-bottom: var(--space-xl);
-}
-
-.login-brand h1 {
-  font-family: var(--font-heading);
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  margin-bottom: 0.25rem;
-}
-
-.login-brand .tagline {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--zd-muted);
 }
 
 .login-status {
@@ -1403,28 +1205,6 @@ a:hover {
 
 .empty-state-text {
   font-size: 0.9rem;
-}
-
-/* ---------- Stat Block ---------- */
-.stat-block {
-  text-align: center;
-  padding: var(--space-md);
-}
-
-.stat-value {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--zd-text);
-}
-
-.stat-label {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--zd-muted);
-  margin-top: 0.2rem;
 }
 
 /* ---------- Share Recipients Checkbox List ---------- */
@@ -1634,14 +1414,12 @@ body {
 .btn-zd-primary,
 .btn-zd-secondary,
 .reaction-btn,
-.theme-toggle,
 .messages-fab {
   border-radius: 8px;
 }
 .btn-zd-primary,
 .btn-zd-secondary,
-.reaction-btn,
-.theme-toggle {
+.reaction-btn {
   min-height: 42px;
   border-width: 1px 1px 3px;
   border-color: var(--zd-border-light);
@@ -1771,9 +1549,6 @@ body {
 .post-card .signal-meta {
   min-width: 0;
   gap: 0.5rem;
-}
-.post-card .signal-time {
-  margin-left: auto;
 }
 .post-more {
   flex: none;
@@ -1991,10 +1766,6 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .zd-grid-3 {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .zd-topnav .nav-links {
     display: none;
     position: absolute;
@@ -2020,11 +1791,6 @@ body {
 @media (max-width: 768px) {
   .zd-main {
     padding: var(--space-md);
-  }
-
-  .zd-grid-2,
-  .zd-grid-3 {
-    grid-template-columns: 1fr;
   }
 
   h1 {
@@ -2062,51 +1828,7 @@ body {
   }
 }
 
-/* ---------- Utility Classes ---------- */
-.gap-xs {
-  gap: var(--space-xs);
-}
-.gap-sm {
-  gap: var(--space-sm);
-}
-.gap-md {
-  gap: var(--space-md);
-}
-.gap-lg {
-  gap: var(--space-lg);
-}
-.gap-xl {
-  gap: var(--space-xl);
-}
-
-.mt-xs {
-  margin-top: var(--space-xs);
-}
-.mt-sm {
-  margin-top: var(--space-sm);
-}
-.mt-md {
-  margin-top: var(--space-md);
-}
-.mt-lg {
-  margin-top: var(--space-lg);
-}
-.mt-xl {
-  margin-top: var(--space-xl);
-}
-
-.mb-xs {
-  margin-bottom: var(--space-xs);
-}
-.mb-sm {
-  margin-bottom: var(--space-sm);
-}
-.mb-md {
-  margin-bottom: var(--space-md);
-}
-.mb-lg {
-  margin-bottom: var(--space-lg);
-}
+/* Bootstrap has no default 2rem spacing utility. */
 .mb-xl {
   margin-bottom: var(--space-xl);
 }
@@ -2134,32 +1856,6 @@ body {
   border-radius: var(--radius-md);
   margin-top: var(--space-md);
   border: 1px solid var(--zd-border);
-}
-
-.avatar-edit-container {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-}
-.avatar-edit-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(10, 15, 11, 0.7);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-}
-.avatar-edit-container:hover .avatar-edit-overlay {
-  opacity: 1;
 }
 
 /* ZeroDay charcoal and burnt orange design tokens */
@@ -2285,18 +1981,6 @@ body {
   border-radius: 9px;
   object-fit: cover;
 }
-.theme-toggle {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--zd-border);
-  border-radius: 10px;
-  background: transparent;
-  color: var(--zd-text);
-  font-size: 1.15rem;
-}
-.theme-toggle:hover {
-  background: var(--zd-surface-alt);
-}
 .zd-status-dot.online {
   background: var(--zd-action);
 }
@@ -2415,9 +2099,6 @@ img {
   position: relative;
   z-index: 1;
 }
-.auth-brand h1 {
-  color: var(--zd-text) !important;
-}
 .login-status {
   position: static !important;
   left: auto !important;
@@ -2521,10 +2202,6 @@ img {
   .zd-topnav .nav-user > a .avatar-sm {
     width: 30px;
     height: 30px;
-  }
-  .theme-toggle {
-    width: 38px;
-    height: 38px;
   }
   .zd-topnav .nav-links {
     display: none;
@@ -2641,150 +2318,6 @@ img {
     0 22px 34px color-mix(in srgb, var(--zd-text) 11%, transparent),
     inset 0 1px 0 color-mix(in srgb, #fff 42%, transparent);
 }
-.threat-board {
-  overflow: hidden;
-  padding: 0.95rem;
-  border: 1px solid var(--zd-border);
-  border-radius: 14px;
-  background: linear-gradient(
-    145deg,
-    var(--zd-surface-alt),
-    var(--zd-surface) 68%
-  );
-  box-shadow:
-    0 4px 0 color-mix(in srgb, var(--zd-border) 78%, transparent),
-    0 14px 24px color-mix(in srgb, var(--zd-text) 9%, transparent),
-    inset 0 1px 0 color-mix(in srgb, #fff 42%, transparent);
-}
-.threat-board-topline,
-.threat-board-footer,
-.threat-board-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.65rem;
-}
-.threat-board-topline {
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--zd-border);
-  font: 600 0.59rem var(--font-mono);
-  letter-spacing: 0.065em;
-  color: var(--zd-muted);
-}
-.threat-board-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-.threat-board-live i {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--zd-action);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zd-action) 16%, transparent);
-}
-.threat-board-total strong {
-  color: var(--zd-text);
-  font-size: 0.78rem;
-}
-.threat-board-content {
-  min-height: 142px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 1rem 0.15rem 0.85rem;
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s ease;
-}
-.threat-board-content.is-changing {
-  opacity: 0.35;
-  transform: translateY(5px);
-}
-.threat-board-severity {
-  align-self: flex-start;
-  padding: 0.25rem 0.45rem;
-  border: 1px solid currentColor;
-  border-radius: 5px;
-  font: 600 0.58rem var(--font-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.threat-board-severity.severity-critical,
-.threat-board-severity.severity-high {
-  color: var(--zd-error);
-  background: color-mix(in srgb, var(--zd-error) 10%, transparent);
-}
-.threat-board-severity.severity-medium {
-  color: var(--zd-warning);
-  background: color-mix(in srgb, var(--zd-warning) 12%, transparent);
-}
-.threat-board-content h3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  margin: 0.65rem 0 0.75rem;
-  font: 600 1.02rem/1.35 var(--font-heading);
-}
-.threat-board-meta {
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  color: var(--zd-muted);
-  font: 500 0.6rem var(--font-mono);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.threat-board-meta time {
-  margin-left: auto;
-  text-transform: none;
-}
-.threat-board-footer {
-  min-height: 40px;
-  padding-top: 0.65rem;
-  border-top: 1px solid var(--zd-border);
-}
-.threat-board-label,
-.threat-board-count {
-  color: var(--zd-muted);
-  font: 500 0.57rem var(--font-mono);
-  letter-spacing: 0.06em;
-}
-.threat-board-count {
-  color: var(--zd-action);
-}
-.threat-board-controls {
-  display: flex;
-  gap: 0.35rem;
-  margin-left: auto;
-}
-.threat-board-controls button {
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--zd-border);
-  border-radius: 8px;
-  background: var(--zd-surface);
-  color: var(--zd-text);
-  font-size: 1rem;
-}
-.threat-board-controls button:hover {
-  background: var(--zd-surface-alt);
-  border-color: var(--zd-action);
-}
-@keyframes threat-live-pulse {
-  50% {
-    opacity: 0.5;
-  }
-}
-.threat-board-live i {
-  animation: threat-live-pulse 1.6s ease-in-out infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .threat-board-live i {
-    animation: none;
-  }
-}
-
 @keyframes pulse-dot {
   0%,
   100% {
@@ -3125,14 +2658,10 @@ img {
 .zd-tab,
 .zd-tab.active,
 .channel-item.active,
-.achievement,
 .rating-option.selected,
 .rating-trustworthy.selected,
 .reaction-btn.active-useful {
   background-color: color-mix(in srgb, var(--zd-action) 9%, transparent);
-}
-.page-status::before {
-  box-shadow: 0 0 0 6px color-mix(in srgb, var(--zd-action) 12%, transparent);
 }
 .category-research,
 .category-learning {
@@ -3147,13 +2676,9 @@ img {
   background: color-mix(in srgb, var(--zd-text) 5%, transparent);
   border-color: color-mix(in srgb, var(--zd-text) 14%, transparent);
 }
-.zd-badge-online,
 .zd-status-dot.online {
   color: var(--color-success);
   background-color: var(--color-success);
-}
-.zd-badge-online {
-  background-color: color-mix(in srgb, var(--color-success) 14%, transparent);
 }
 .zd-status-dot.online {
   box-shadow: 0 0 6px color-mix(in srgb, var(--color-success) 48%, transparent);
@@ -3171,19 +2696,6 @@ img {
 .zd-textarea:focus {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--zd-action) 18%, transparent);
 }
-.login-bg-grid {
-  background-image:
-    linear-gradient(
-      color-mix(in srgb, var(--zd-action) 6%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--zd-action) 6%, transparent) 1px,
-      transparent 1px
-    );
-}
-
 /* Theme switch. */
 .theme-switch {
   position: relative;

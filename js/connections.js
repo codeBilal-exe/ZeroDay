@@ -97,7 +97,7 @@ function renderConnections() {
 
             <!-- Current Rating -->
             <div style="margin-bottom:0.75rem;">
-              <div class="technical-label mb-xs" style="font-size:0.55rem;">Trust Rating</div>
+              <div class="technical-label mb-1" style="font-size:0.55rem;">Trust Rating</div>
               ${
                 ratingDisplay ||
                 '<span class="text-muted-zd" style="font-size:0.75rem;">Not rated</span>'}
@@ -139,7 +139,7 @@ function renderPending() {
 
   // Incoming
   html += `
-    <div class="zd-panel mb-lg">
+    <div class="zd-panel mb-4">
       <div class="zd-panel-header">
         <span class="zd-panel-title">${
       zdIcon('person-plus')} Incoming requests (${incoming.length})</span>
@@ -199,7 +199,7 @@ function renderPending() {
       const target = getUserById(req.toId);
       if (!target) return;
       html += `
-        <div class="user-card mb-sm">
+        <div class="user-card mb-2">
           <a href="profile.html?id=${target.id}">${
           renderAvatar(target, 'avatar-md')}</a>
           <div class="user-card-info">
@@ -238,7 +238,7 @@ function renderFindPeople() {
 
   container.innerHTML = `
     <!-- Search -->
-    <div class="zd-search mb-lg" style="max-width:400px;">
+    <div class="zd-search mb-4" style="max-width:400px;">
       <span class="search-icon">${zdIcon('search')}</span>
       <input type="text" class="zd-input" id="find-search" placeholder="Search by name..." oninput="filterPeople()" style="padding-left:2.5rem;">
     </div>
@@ -441,7 +441,7 @@ function openRatingModal(targetId) {
       <div style="font-weight:600;margin-top:0.5rem;">${target.name}</div>
     </div>
 
-    <div class="technical-label mb-sm">Connection Trust Rating</div>
+    <div class="technical-label mb-2">Connection Trust Rating</div>
     <div class="rating-group" style="justify-content:center;" id="rating-options">
       <div class="rating-option rating-stupid ${
       currentRating === 'stupid' ? 'selected' : ''}"

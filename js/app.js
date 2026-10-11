@@ -1455,14 +1455,14 @@ function openShareModal(postId) {
           <p class="text-muted-zd" style="font-size:0.85rem;">Share "${
       post.title}" with:</p>
 
-          <div class="mb-md">
+          <div class="mb-3">
             <div class="share-recipient" onclick="selectAllRecipients(true)">
               <input type="checkbox" id="share-all" checked>
               <label for="share-all" style="cursor:pointer;font-weight:600;">All Connections</label>
             </div>
           </div>
 
-          <div class="technical-label mb-sm">Or select specific connections:</div>
+          <div class="technical-label mb-2">Or select specific connections:</div>
           <div id="share-recipients">
             ${
       connections

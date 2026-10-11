@@ -22,7 +22,7 @@ document.addEventListener('zd:page-ready', () => {
         <div class="empty-state-icon fs-1 mb-2">${
         zdIcon('person-bounding-box')}</div>
         <div class="empty-state-text fs-5 mb-3">User not found.</div>
-        <a href="home.html" class="btn-zd-primary mt-md" style="display:inline-block;">Back to Signals</a>
+        <a href="home.html" class="btn-zd-primary mt-3" style="display:inline-block;">Back to Signals</a>
       </div>
     `;
     return;
