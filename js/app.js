@@ -297,7 +297,7 @@ const messages = [
     content:
         'Hi Bilal, I read your access-control post. The IDOR checklist was clear.',
     timestamp: new Date(Date.now() - 900000),
-    read: false
+    read: true
   },
   {
     id: 2,
@@ -314,7 +314,7 @@ const messages = [
     toId: 1,
     content: 'Here is the request and response snapshot we discussed.',
     timestamp: new Date(Date.now() - 600000),
-    read: false
+    read: true
   },
   {
     id: 4,
