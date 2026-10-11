@@ -26,7 +26,6 @@ document.addEventListener('zd:page-ready', () => {
     searchInput.focus();
   });
 
-  // Render feed
   renderFeed('all');
   renderThreatTicker();
   setupShareTargetToggle();
@@ -34,9 +33,14 @@ document.addEventListener('zd:page-ready', () => {
 
 let currentFilter = 'all';
 let currentQuery = '';
+let feedVideoObserver = null;
+let activeFeedVideo = null;
 
 /** Render signal feed */
 function renderFeed(filter) {
+  feedVideoObserver?.disconnect();
+  activeFeedVideo?.pause();
+  activeFeedVideo = null;
   currentFilter = filter;
   const feed = document.getElementById('signals-feed');
   const currentUser = getCurrentUser();
@@ -49,14 +53,13 @@ function renderFeed(filter) {
   if (currentQuery) {
     feedPosts = feedPosts.filter(post => {
       const author = getUserById(post.authorId);
-      const searchable = [
-        post.title,
-        post.content,
-        post.category,
-        post.risk,
-        author?.name,
-        author?.username
-      ].filter(Boolean).join(' ').toLowerCase();
+      const searchable =
+          [
+            post.title, post.content, post.category, post.risk, author?.name,
+            author?.username
+          ].filter(Boolean)
+              .join(' ')
+              .toLowerCase();
       return searchable.includes(currentQuery);
     });
   }
@@ -65,19 +68,48 @@ function renderFeed(filter) {
     feed.innerHTML = `
       <div class="empty-state">
         <div class="empty-state-icon">${zdIcon('activity')}</div>
-        <div class="empty-state-text">${currentQuery ? 'No posts match your search.' : `No signals found${filter !== 'all' ? ` for category "${filter}"` : ''}.`}</div>
+        <div class="empty-state-text">${
+        currentQuery ?
+            'No posts match your search.' :
+            `No signals found${
+                filter !== 'all' ? ` for category "${filter}"` : ''}.`}</div>
       </div>
     `;
     return;
   }
 
   feed.innerHTML = feedPosts.map(p => renderSignalCard(p, true)).join('');
+  prepareFeedVideos();
+}
+
+/** Pause videos offscreen and play the visible feed video. */
+function prepareFeedVideos() {
+  const videos = document.querySelectorAll('#signals-feed video.signal-video');
+  if (!('IntersectionObserver' in window)) {
+    videos[0]?.play().catch(() => {});
+    return;
+  }
+  feedVideoObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (activeFeedVideo && activeFeedVideo !== entry.target)
+          activeFeedVideo.pause();
+        activeFeedVideo = entry.target;
+        entry.target.play().catch(() => {});
+      } else if (activeFeedVideo === entry.target) {
+        entry.target.pause();
+        activeFeedVideo = null;
+      }
+    });
+  }, {rootMargin: '120px 0px'});
+  videos.forEach(video => feedVideoObserver.observe(video));
 }
 
 /** Filter signals by category */
 function filterSignals(filter, tabEl) {
   // Update active tab
-  document.querySelectorAll('.zd-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.zd-tab').forEach(
+      t => t.classList.remove('active'));
   tabEl.classList.add('active');
 
   renderFeed(filter);
@@ -86,20 +118,33 @@ function filterSignals(filter, tabEl) {
 /** Render a continuous threat update marquee above the feed. */
 function renderThreatTicker() {
   const container = document.getElementById('threat-ticker');
-  const activeThreats = threatWatchItems.filter(t => !['low', 'info'].includes(t.severity));
+  const activeThreats =
+      threatWatchItems.filter(t => !['low', 'info'].includes(t.severity));
   if (!container) return;
   if (!activeThreats.length) {
     container.remove();
     return;
   }
-  const items = activeThreats.map(item => `
-    <span class="threat-marquee-item"><b class="severity-${item.severity}">${item.severity}</b><span>${item.title}</span><small>${item.category}</small></span>
-    <span class="threat-marquee-separator" aria-hidden="true"></span>`).join('');
+  const items =
+      activeThreats
+          .map(
+              item => `
+    <span class="threat-marquee-item"><b class="severity-${item.severity}">${
+                  item.severity}</b><span>${item.title}</span><small>${
+                  item.category}</small></span>
+    <span class="threat-marquee-separator" aria-hidden="true"></span>`)
+          .join('');
   container.innerHTML = `
-    <section class="threat-marquee" aria-label="${activeThreats.length} current threat updates">
-      <div class="threat-marquee-status"><span>${zdIcon('activity')} CURRENT UPDATES</span><strong>${activeThreats.length} ACTIVE</strong></div>
-      <div class="threat-marquee-window" aria-live="off"><div class="threat-marquee-track"><div class="threat-marquee-sequence">${items}</div><div class="threat-marquee-sequence" aria-hidden="true">${items}</div></div></div>
-      <a class="threat-marquee-link" href="threat-watch.html">Threat Watch ${zdIcon('arrow-up-right')}</a>
+    <section class="threat-marquee" aria-label="${
+      activeThreats.length} current threat updates">
+      <div class="threat-marquee-status"><span>${
+      zdIcon('activity')} CURRENT UPDATES</span><strong>${
+      activeThreats.length} ACTIVE</strong></div>
+      <div class="threat-marquee-window" aria-live="off"><div class="threat-marquee-track"><div class="threat-marquee-sequence">${
+      items}</div><div class="threat-marquee-sequence" aria-hidden="true">${
+      items}</div></div></div>
+      <a class="threat-marquee-link" href="threat-watch.html">Threat Watch ${
+      zdIcon('arrow-up-right')}</a>
     </section>`;
 }
 
@@ -112,21 +157,31 @@ function setupShareTargetToggle() {
   if (!allRadio || !selectedRadio) return;
 
   const currentUser = getCurrentUser();
-  const connections = currentUser.connections.map(id => getUserById(id)).filter(Boolean);
+  const connections =
+      currentUser.connections.map(id => getUserById(id)).filter(Boolean);
 
   // Build connection checkboxes
-  list.innerHTML = connections.map(c => `
+  list.innerHTML =
+      connections
+          .map(
+              c => `
     <div class="share-recipient">
-      <input type="checkbox" class="new-signal-check" id="ns-${c.id}" value="${c.id}" checked>
-      <label for="ns-${c.id}" style="cursor:pointer;display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;">
+      <input type="checkbox" class="new-signal-check" id="ns-${c.id}" value="${
+                  c.id}" checked>
+      <label for="ns-${
+                  c.id}" style="cursor:pointer;display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;">
         ${renderAvatar(c, 'avatar-xs')}
         ${c.name}
       </label>
     </div>
   `).join('');
 
-  allRadio.addEventListener('change', () => { list.style.display = 'none'; });
-  selectedRadio.addEventListener('change', () => { list.style.display = 'block'; });
+  allRadio.addEventListener('change', () => {
+    list.style.display = 'none';
+  });
+  selectedRadio.addEventListener('change', () => {
+    list.style.display = 'block';
+  });
 }
 
 /** Open new signal modal */
@@ -134,8 +189,10 @@ function openNewSignalModal() {
   // Reset form
   const form = document.getElementById('new-signal-form');
   if (form) form.reset();
-  document.querySelectorAll('.zd-error-msg').forEach(e => e.classList.remove('show'));
-  document.querySelectorAll('.is-invalid').forEach(e => e.classList.remove('is-invalid'));
+  document.querySelectorAll('.zd-error-msg')
+      .forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.is-invalid')
+      .forEach(e => e.classList.remove('is-invalid'));
   document.getElementById('selected-connections-list').style.display = 'none';
 
   const modal = new bootstrap.Modal(document.getElementById('newSignalModal'));
@@ -174,7 +231,9 @@ function submitNewSignal() {
   // Determine share targets
   let sharedWith = 'all';
   if (!shareAll) {
-    const selected = Array.from(document.querySelectorAll('.new-signal-check:checked')).map(cb => parseInt(cb.value));
+    const selected =
+        Array.from(document.querySelectorAll('.new-signal-check:checked'))
+            .map(cb => parseInt(cb.value));
     if (selected.length === 0) {
       showToast('Select at least one connection to share with.', 'error');
       return;
@@ -182,10 +241,11 @@ function submitNewSignal() {
     sharedWith = selected;
   }
 
-  // Handle an optional image or video upload.
+  // Attach optional image or video media.
   const imageInput = document.getElementById('signal-image');
   const file = imageInput ? imageInput.files[0] : null;
 
+  // Create the post after optional media has been prepared.
   const createPostAndFinish = (mediaData, mediaFile) => {
     // Create new post
     const newPost = {
@@ -204,7 +264,8 @@ function submitNewSignal() {
 
     if (mediaData && mediaFile) {
       newPost.media = mediaData;
-      newPost.mediaType = mediaFile.type.startsWith('video/') ? 'video' : 'image';
+      newPost.mediaType =
+          mediaFile.type.startsWith('video/') ? 'video' : 'image';
       newPost.mediaMime = mediaFile.type;
     }
 
@@ -212,7 +273,8 @@ function submitNewSignal() {
     sendRealtimeEvent({type: 'post:create', post: newPost});
 
     // Close modal
-    const modal = bootstrap.Modal.getInstance(document.getElementById('newSignalModal'));
+    const modal =
+        bootstrap.Modal.getInstance(document.getElementById('newSignalModal'));
     if (modal) modal.hide();
 
     // Refresh feed
@@ -226,7 +288,8 @@ function submitNewSignal() {
     reader.onload = (e) => {
       createPostAndFinish(e.target.result, file);
     };
-    reader.onerror = () => showToast('That file could not be loaded. Please choose another.', 'error');
+    reader.onerror = () => showToast(
+        'That file could not be loaded. Please choose another.', 'error');
     reader.readAsDataURL(file);
   } else {
     createPostAndFinish(null, null);
@@ -237,7 +300,8 @@ function submitNewSignal() {
 document.addEventListener('input', (e) => {
   if (e.target.classList.contains('is-invalid')) {
     e.target.classList.remove('is-invalid');
-    const errorMsg = e.target.closest('.zd-form-group')?.querySelector('.zd-error-msg');
+    const errorMsg =
+        e.target.closest('.zd-form-group')?.querySelector('.zd-error-msg');
     if (errorMsg) errorMsg.classList.remove('show');
   }
 });

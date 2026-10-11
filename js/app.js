@@ -10,15 +10,18 @@ const users = [
     name: 'Bilal Asif',
     username: 'bilal.asif',
     password: 'zeroday123',
-    bio: 'Cybersecurity enthusiast focused on web application security and practical digital safety.',
+    role: 'Security learner',
+    bio:
+        'Cybersecurity enthusiast focused on web application security and practical digital safety.',
     interests: ['Web Security', 'Penetration Testing', 'CTF', 'OWASP'],
     level: 12,
     xp: 2450,
     xpToNext: 3000,
     status: 'online',
     lastActive: new Date(Date.now() - 300000),
-    avatar: 'assets/avatars/user-1.jpg',
-    achievements: ['First Signal', 'Bug Hunter', 'CTF Rookie', '10 Connections'],
+    avatar: '../assets/avatars/user-6.svg',
+    achievements:
+        ['First Signal', 'Bug Hunter', 'CTF Rookie', '10 Connections'],
     connections: [2, 3, 4]
   },
   {
@@ -26,14 +29,16 @@ const users = [
     name: 'Usaid Rehan',
     username: 'usaid.rehan',
     password: 'zeroday',
-    bio: 'Exploring application security, secure development, and community research.',
+    role: 'Application security researcher',
+    bio:
+        'Exploring application security, secure development, and community research.',
     interests: ['Application Security', 'Web Development', 'OWASP'],
     level: 7,
     xp: 920,
     xpToNext: 1500,
     status: 'online',
     lastActive: new Date(Date.now() - 60000),
-    avatar: 'assets/avatars/signal-usaid.svg',
+    avatar: '../assets/avatars/user-1.svg',
     achievements: ['First Signal', 'Community Member'],
     connections: [1, 3, 4]
   },
@@ -42,14 +47,16 @@ const users = [
     name: 'Raheem Khan',
     username: 'raheemxd',
     password: 'zeroday',
-    bio: 'Building dependable software and learning how to secure it along the way.',
+    role: 'Software developer',
+    bio:
+        'Building dependable software and learning how to secure it along the way.',
     interests: ['Secure Coding', 'JavaScript', 'CTF'],
     level: 8,
     xp: 1180,
     xpToNext: 1800,
     status: 'online',
     lastActive: new Date(Date.now() - 120000),
-    avatar: 'assets/avatars/signal-raheem.svg',
+    avatar: '../assets/avatars/user-2.svg',
     achievements: ['First Signal', 'Helpful Reviewer'],
     connections: [1, 2, 4]
   },
@@ -58,14 +65,16 @@ const users = [
     name: 'Mina Qureshi',
     username: 'mina.codes',
     password: 'zeroday',
-    bio: 'Developer focused on accessible tools, privacy, and safer online communities.',
+    role: 'Privacy-minded developer',
+    bio:
+        'Developer focused on accessible tools, privacy, and safer online communities.',
     interests: ['Privacy', 'Frontend', 'Security Awareness'],
     level: 6,
     xp: 760,
     xpToNext: 1200,
     status: 'online',
     lastActive: new Date(Date.now() - 240000),
-    avatar: 'assets/avatars/signal-mina.svg',
+    avatar: '../assets/avatars/user-3.svg',
     achievements: ['First Signal'],
     connections: [1, 2, 3]
   },
@@ -74,6 +83,7 @@ const users = [
     name: 'Daniyal Noor',
     username: 'daniyal.noor',
     password: 'zeroday',
+    role: 'Digital safety learner',
     bio: 'New to the community and interested in practical digital safety.',
     interests: ['Digital Safety', 'Learning', 'Privacy'],
     level: 1,
@@ -81,7 +91,7 @@ const users = [
     xpToNext: 500,
     status: 'online',
     lastActive: new Date(Date.now() - 300000),
-    avatar: 'assets/avatars/signal-daniyal.svg',
+    avatar: '../assets/avatars/user-4.svg',
     achievements: [],
     connections: []
   }
@@ -104,8 +114,7 @@ const posts = [
     title: 'Phishing Campaign Targeting University Students',
     content:
         'Detected a coordinated phishing campaign using fake university portal pages. The attackers are sending emails with subjects like \'Grade Update Required\' and \'Scholarship Approval\'. The landing pages replicate Air University and NUST login portals. Always verify URLs before entering credentials.',
-    image:
-        'https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=800',
+    image: '../assets/posts/university-phishing.jpg',
     timestamp: new Date(Date.now() - 720000),
     sharedWith: 'all',
     useful: 24,
@@ -120,8 +129,7 @@ const posts = [
     title: 'Broken Access Control in REST APIs — Analysis',
     content:
         'Completed a research analysis on OWASP A01:2021 Broken Access Control patterns in modern REST APIs. Key findings: 67% of tested APIs lacked proper authorization checks on object-level access. Horizontal privilege escalation was possible in 40% of cases through IDOR vulnerabilities.',
-    image:
-        'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800',
+    image: '../assets/posts/api-security-research.jpg',
     timestamp: new Date(Date.now() - 1800000),
     sharedWith: 'all',
     useful: 31,
@@ -164,8 +172,7 @@ const posts = [
     title: 'Suspicious DNS Queries Detected on Campus Network',
     content:
         'SOC team detected unusual DNS resolution patterns suggesting potential DNS tunneling activity on the campus network. Multiple hosts are resolving long, encoded subdomains to an external server. If you notice unusual network slowdowns, report to the IT security team.',
-    image:
-        'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800',
+    image: '../assets/posts/campus-network-alert.jpg',
     timestamp: new Date(Date.now() - 7200000),
     sharedWith: 'all',
     useful: 12,
@@ -220,14 +227,32 @@ const posts = [
     category: 'RESEARCH',
     risk: null,
     title: 'A look inside the cybersecurity field',
-    content: 'A short field clip for the ZeroDay community, with a few notes on the people and practices behind day-to-day security work.',
+    content:
+        'A short field clip for the ZeroDay community, with a few notes on the people and practices behind day-to-day security work.',
     mediaType: 'video',
-    media: 'assets/videos/zeroday-sample-video.mp4',
+    media: '../assets/videos/zeroday-sample-video.mp4',
     mediaMime: 'video/mp4',
     timestamp: new Date(Date.now() - 300000),
     sharedWith: 'all',
     useful: 18,
     notUseful: 0,
+    reactions: {}
+  },
+  {
+    id: 10,
+    authorId: 3,
+    category: 'THREAT',
+    risk: 'medium',
+    title: 'How Cyber Attacks Happen Every 11 Minutes',
+    content:
+        'A short video explaining how frequently cyber attacks occur and the everyday security habits that can help reduce risk.',
+    mediaType: 'video',
+    media: '../assets/videos/Cyber_Attack-sample-Video.mp4',
+    mediaMime: 'video/mp4',
+    timestamp: new Date(Date.now() - 90000),
+    sharedWith: 'all',
+    useful: 22,
+    notUseful: 1,
     reactions: {}
   }
 ];
@@ -239,6 +264,7 @@ const connectionRequests = [];
 const blockedUsers = [...readStoredArray('zd_blocked_users')];
 const savedPostIds = new Set(readStoredArray('zd_saved_posts'));
 
+/** Read a JSON array from local storage, falling back safely. */
 function readStoredArray(key) {
   try {
     const value = JSON.parse(localStorage.getItem(key) || '[]');
@@ -252,8 +278,15 @@ function readStoredArray(key) {
 const connectionRatings = [
   {fromId: 1, toId: 2, rating: 'cool'},
   {fromId: 1, toId: 3, rating: 'trustworthy'},
-  {fromId: 2, toId: 1, rating: 'cool'},
-  {fromId: 3, toId: 1, rating: 'trustworthy'}
+  {fromId: 1, toId: 4, rating: 'stupid'}, {fromId: 2, toId: 1, rating: 'cool'},
+  {fromId: 2, toId: 3, rating: 'cool'},
+  {fromId: 2, toId: 4, rating: 'trustworthy'},
+  {fromId: 3, toId: 1, rating: 'trustworthy'},
+  {fromId: 3, toId: 2, rating: 'cool'},
+  {fromId: 3, toId: 4, rating: 'trustworthy'},
+  {fromId: 4, toId: 1, rating: 'stupid'},
+  {fromId: 4, toId: 2, rating: 'trustworthy'},
+  {fromId: 4, toId: 3, rating: 'cool'}
 ];
 // ---- Messages / Secure Channels ----
 const messages = [
@@ -262,7 +295,7 @@ const messages = [
     fromId: 2,
     toId: 1,
     content:
-        'Hey Bilal, I saw your access-control breakdown. The two-account testing tip is especially useful.',
+        'Hi Bilal, I read your access-control post. The IDOR checklist was clear.',
     timestamp: new Date(Date.now() - 900000),
     read: false
   },
@@ -271,129 +304,133 @@ const messages = [
     fromId: 1,
     toId: 2,
     content:
-        'Thanks, Usaid! I would love to compare notes. Are you free sometime this week?',
-    timestamp: new Date(Date.now() - 600000),
+        'Thanks, Usaid. I added a short test case to the post this morning.',
+    timestamp: new Date(Date.now() - 720000),
     read: true
   },
   {
     id: 3,
-    fromId: 3,
+    fromId: 2,
     toId: 1,
-    content:
-        'Bilal, I found another lookalike university portal using the same wording. I added the screenshot to my post.',
-    timestamp: new Date(Date.now() - 1200000),
+    content: 'Here is the request and response snapshot we discussed.',
+    timestamp: new Date(Date.now() - 600000),
     read: false
   },
   {
     id: 4,
     fromId: 1,
-    toId: 3,
-    content:
-        'Just saw it, Raheem. I will share the warning with our class group. The URL comparison makes it clear.',
-    timestamp: new Date(Date.now() - 1000000),
+    toId: 2,
+    content: 'Nice catch. I will share the post with our study group.',
+    timestamp: new Date(Date.now() - 480000),
     read: true
   },
   {
     id: 5,
-    fromId: 5,
+    fromId: 3,
     toId: 1,
     content:
-        'I finished labeling the DNS capture. Could you look at the notes when you have a moment?',
-    timestamp: new Date(Date.now() - 7200000),
+        'I checked the phishing report flow. The domain warning is easy to follow.',
+    timestamp: new Date(Date.now() - 2400000),
     read: true
   },
   {
     id: 6,
     fromId: 1,
-    toId: 5,
-    content:
-        'Absolutely. I can review it after class. Is the capture in the shared folder?',
-    timestamp: new Date(Date.now() - 7000000),
+    toId: 3,
+    content: 'Great. I added a short list of domain checks beneath the post.',
+    timestamp: new Date(Date.now() - 2100000),
     read: true
   },
   {
     id: 7,
-    fromId: 5,
+    fromId: 4,
     toId: 1,
-    content:
-        'We are planning Friday’s awareness session now. Could you help with the short password-safety activity?',
-    timestamp: new Date(Date.now() - 14400000),
+    content: 'The privacy checklist is ready if you have time to review it.',
+    timestamp: new Date(Date.now() - 5400000),
     read: true
   },
   {
     id: 8,
-    fromId: 4,
-    toId: 1,
+    fromId: 1,
+    toId: 4,
     content:
-        'I sent a quick voice note with the lab setup I mentioned. Let me know if the steps are clear.',
-    timestamp: new Date(Date.now() - 18000000),
+        'I sent a quick voice note with two suggestions for the checklist.',
+    timestamp: new Date(Date.now() - 5100000),
     read: true
   },
   {
     id: 9,
-    fromId: 3,
+    fromId: 2,
     toId: 1,
-    content:
-        'Exactly. The page even copied the university colors, so the domain is the detail that gives it away.',
-    timestamp: new Date(Date.now() - 420000),
-    read: false
+    content: 'Nice catch. I will share the updated example with the study group.',
+    timestamp: new Date(Date.now() - 360000),
+    read: true
   },
   {
     id: 10,
-    fromId: 5,
-    toId: 1,
-    content:
-        'Yes, it is in the shared folder now. I included a small timeline beside the packet notes.',
-    timestamp: new Date(Date.now() - 6400000),
+    fromId: 1,
+    toId: 2,
+    content: 'Thanks! I added a note about testing with a second account too.',
+    timestamp: new Date(Date.now() - 285000),
     read: true
   },
   {
     id: 11,
-    fromId: 1,
-    toId: 5,
-    content:
-        'Found it. The timing pattern is much easier to follow with the timeline, nice work.',
-    timestamp: new Date(Date.now() - 6100000),
-    read: true
+    fromId: 2,
+    toId: 1,
+    content: 'That makes the steps much easier to reproduce.',
+    timestamp: new Date(Date.now() - 210000),
+    read: false
   },
   {
     id: 12,
-    fromId: 1,
-    toId: 5,
-    content:
-        'I can help with the activity. I will bring a few examples that work for non-technical audiences.',
-    timestamp: new Date(Date.now() - 13200000),
+    fromId: 3,
+    toId: 1,
+    content: 'Could you send me the link to the updated phishing checklist?',
+    timestamp: new Date(Date.now() - 1500000),
     read: true
   },
   {
     id: 13,
-    fromId: 5,
-    toId: 1,
-    content:
-        'That would be great. We are keeping it practical and beginner-friendly this week.',
-    timestamp: new Date(Date.now() - 12900000),
+    fromId: 1,
+    toId: 3,
+    content: 'Just sent it. The domain and redirect checks are near the top.',
+    timestamp: new Date(Date.now() - 1320000),
     read: true
   },
   {
     id: 14,
-    fromId: 1,
-    toId: 4,
-    content:
-        'Thanks, I will try the setup tonight. The steps sound much less intimidating now.',
-    timestamp: new Date(Date.now() - 17300000),
+    fromId: 3,
+    toId: 1,
+    content: 'Found it. I will add one more example from a lookalike domain.',
+    timestamp: new Date(Date.now() - 1140000),
     read: true
   },
   {
     id: 15,
     fromId: 4,
     toId: 1,
-    content:
-        'Start with the first lab and take it slowly. Happy to troubleshoot if anything gets stuck.',
-    timestamp: new Date(Date.now() - 17000000),
+    content: 'I added the plain-language version of the privacy checklist.',
+    timestamp: new Date(Date.now() - 3300000),
+    read: true
+  },
+  {
+    id: 16,
+    fromId: 1,
+    toId: 4,
+    content: 'This reads clearly. The short examples make it easy to scan.',
+    timestamp: new Date(Date.now() - 3120000),
+    read: true
+  },
+  {
+    id: 17,
+    fromId: 4,
+    toId: 1,
+    content: 'Great, I will use that version for the next community post.',
+    timestamp: new Date(Date.now() - 2940000),
     read: true
   }
 ];
-
 // ---- Threat Watch Data ----
 const threatWatchItems = [
   {
@@ -583,12 +620,10 @@ function timeAgo(date) {
   return `${days}d ago`;
 }
 
-/** Render a profile photo or a local profile icon */
+/** Render a profile photo or the local fallback avatar. */
 function renderAvatar(user, sizeClass = 'avatar-md') {
-  const src = user.avatar || 'assets/icons/profile_icon-male.png';
-  const iconClass = src.includes('profile_icon-') ? ' avatar-icon' : '';
-  return `<img src="${src}" alt="${user.name}" class="avatar${iconClass} ${
-      sizeClass}">`;
+  const src = user.avatar || '../assets/avatars/user-5.svg';
+  return `<img src="${src}" alt="${user.name}" class="avatar ${sizeClass}">`;
 }
 
 /** Check if two users are connected */
@@ -683,7 +718,8 @@ function showToast(message, type = 'success') {
       <strong>${toastKind.label}</strong>
       <span>${escapeHTML(message)}</span>
     </div>
-    <button class="zd-toast-dismiss" type="button" onclick="this.closest('.zd-toast').remove()" aria-label="Dismiss notification">${zdIcon('x-lg')}</button>
+    <button class="zd-toast-dismiss" type="button" onclick="this.closest('.zd-toast').remove()" aria-label="Dismiss notification">${
+      zdIcon('x-lg')}</button>
   `;
   document.body.appendChild(toast);
 
@@ -692,7 +728,7 @@ function showToast(message, type = 'success') {
     toast.classList.add('show');
   });
 
-  // Auto-hide after allowing enough time to read the notification.
+  // Hide the toast after a short delay.
   window.setTimeout(() => {
     if (!toast.isConnected) return;
     toast.classList.add('is-leaving');
@@ -722,14 +758,7 @@ function getHomeFeed(userId) {
           p => (user.connections.includes(p.authorId) ||
                 p.authorId === userId) &&
               !isBlocked(p.authorId, userId))
-      .sort((a, b) => {
-        // Sort by author's last active time, then by post timestamp
-        const authorA = getUserById(a.authorId);
-        const authorB = getUserById(b.authorId);
-        const activityDiff = authorB.lastActive - authorA.lastActive;
-        if (activityDiff !== 0) return activityDiff;
-        return b.timestamp - a.timestamp;
-      });
+      .sort((a, b) => b.timestamp - a.timestamp);
 }
 
 /** Build the top navigation HTML for pages */
@@ -753,7 +782,7 @@ function buildNavigation(activePage) {
   <nav class="zd-topnav" id="main-nav">
     <div class="brand">
       <a href="home.html" style="text-decoration:none;display:flex;align-items:center;gap:0.75rem;">
-        <img class="brand-mark" src="assets/icons/ZeroDay-Logo.png" alt="ZeroDay">
+        <img class="brand-mark" src="../assets/icons/ZeroDay-Logo.png" alt="ZeroDay">
         <div class="brand-copy">
           <div class="brand-name" aria-label="ZER0DAY">ZER<span class="brand-zero">0</span>DAY</div>
           <div class="brand-tagline">Ideas worth sharing.</div>
@@ -792,12 +821,9 @@ function buildNavigation(activePage) {
 
     <div class="nav-user">
       <a href="profile.html" class="nav-profile ${
-      activePage === 'profile' ?
-          'active' :
-          ''}" aria-label="Open profile">
+      activePage === 'profile' ? 'active' : ''}" aria-label="Open profile">
         ${renderAvatar(user, 'avatar-sm')}
-        <span>${
-      user.name.split(' ')[0]}</span>
+        <span>${user.name.split(' ')[0]}</span>
       </a>
     </div>
   </nav>
@@ -808,11 +834,13 @@ function buildNavigation(activePage) {
   `;
 }
 
+/** Return a themed SVG icon by name. */
 function zdIcon(name, className = '') {
   return `<i class="bi bi-${name}${
       className ? ` ${className}` : ''}" aria-hidden="true"></i>`;
 }
 
+/** Build the shared theme switch control. */
 function themeSwitchMarkup(extraClass = '') {
   const isLight = document.documentElement.dataset.theme === 'light';
   return `<button class="theme-switch ${
@@ -837,12 +865,15 @@ function initNavToggle() {
     toggle.addEventListener('click', () => {
       const expanded = links.classList.toggle('show');
       toggle.setAttribute('aria-expanded', String(expanded));
-      toggle.setAttribute('aria-label', expanded ? 'Close navigation' : 'Open navigation');
-      toggle.innerHTML = `<i class="bi bi-${expanded ? 'x-lg' : 'list'}" aria-hidden="true"></i>`;
+      toggle.setAttribute(
+          'aria-label', expanded ? 'Close navigation' : 'Open navigation');
+      toggle.innerHTML = `<i class="bi bi-${
+          expanded ? 'x-lg' : 'list'}" aria-hidden="true"></i>`;
     });
   }
 }
 
+/** Show the back-to-top control after scrolling. */
 function syncScrollTopButton() {
   const button = document.querySelector('.scroll-top-fab');
   if (!button) return;
@@ -857,9 +888,8 @@ document.addEventListener('click', event => {
   if (!event.target.closest('.scroll-top-fab')) return;
   window.scrollTo({
     top: 0,
-    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ?
-        'auto' :
-        'smooth'
+    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' :
+                                                                       'smooth'
   });
 });
 
@@ -893,10 +923,11 @@ function logout() {
 
   const modal = new bootstrap.Modal(modalElement);
   let confirmed = false;
-  modalElement.querySelector('#confirm-logout').addEventListener('click', () => {
-    confirmed = true;
-    modal.hide();
-  });
+  modalElement.querySelector('#confirm-logout')
+      .addEventListener('click', () => {
+        confirmed = true;
+        modal.hide();
+      });
   modalElement.addEventListener('hidden.bs.modal', () => {
     modal.dispose();
     modalElement.remove();
@@ -984,12 +1015,14 @@ function renderSignalCard(post, showActions = true) {
     <div class="signal-body">${post.content}</div>
     ${
       post.mediaType === 'video' && post.media ?
-          `<video class="signal-video" controls autoplay muted loop playsinline preload="metadata" aria-label="Video attached to ${
+          `<video class="signal-video" controls muted loop playsinline preload="none" aria-label="Video attached to ${
               post.title}"><source src="${post.media}" type="${
               post.mediaMime || 'video/mp4'}"></video>` :
-          post.media ? `<img src="${post.media}" alt="Media attached to ${
+          post.media ? `<img loading="lazy" decoding="async" src="${
+                           post.media}" alt="Media attached to ${
                            post.title}" class="signal-image">` :
-          post.image ? `<img src="${post.image}" alt="Media attached to ${
+          post.image ? `<img loading="lazy" decoding="async" src="${
+                           post.image}" alt="Media attached to ${
                            post.title}" class="signal-image">` :
                        ''}
 
@@ -1050,6 +1083,7 @@ function renderSignalCard(post, showActions = true) {
   `;
 }
 
+/** Close any open post action menu. */
 function closePostMenus() {
   document.querySelectorAll('.post-menu:not([hidden])').forEach(menu => {
     menu.hidden = true;
@@ -1059,6 +1093,7 @@ function closePostMenus() {
   });
 }
 
+/** Toggle a post's action menu. */
 function togglePostMenu(event, postId) {
   event.stopPropagation();
   const card = document.querySelector(`[data-post-id="${postId}"]`);
@@ -1071,6 +1106,7 @@ function togglePostMenu(event, postId) {
   trigger.setAttribute('aria-expanded', String(shouldOpen));
 }
 
+/** Remove a post from the local feed. */
 function removePost(postId) {
   const postIndex = posts.findIndex(post => post.id === postId);
   if (postIndex < 0) return;
@@ -1085,6 +1121,7 @@ function removePost(postId) {
   showToast('Post removed.', 'success');
 }
 
+/** Block the author and remove their posts from view. */
 function blockPostAuthor(postId) {
   const post = posts.find(item => item.id === postId);
   if (!post) return;
@@ -1114,6 +1151,7 @@ function blockPostAuthor(postId) {
       'success');
 }
 
+/** Save or unsave a post in local storage. */
 function toggleSavePost(postId) {
   const wasSaved = savedPostIds.has(postId);
   if (wasSaved)
@@ -1159,6 +1197,7 @@ document.addEventListener('keydown', event => {
   items[nextIndex]?.focus();
 });
 
+/** Return sample comments for a post. */
 function seedPostComments(postId) {
   const examples = {
     1: [
@@ -1257,11 +1296,13 @@ function seedPostComments(postId) {
     9: [
       {
         authorId: 1,
-        content: 'Nice overview. It is good to see the people side of the field too.'
+        content:
+            'Nice overview. It is good to see the people side of the field too.'
       },
       {
         authorId: 5,
-        content: 'The day-to-day collaboration is a big part of incident response.'
+        content:
+            'The day-to-day collaboration is a big part of incident response.'
       }
     ]
   };
@@ -1270,6 +1311,7 @@ function seedPostComments(postId) {
           comment => ({...comment, timestamp: new Date(Date.now() - 3600000)}));
 }
 
+/** Render one comment in a post discussion. */
 function renderPostComment(comment) {
   const author = getUserById(comment.authorId);
   if (!author) return '';
@@ -1280,6 +1322,7 @@ function renderPostComment(comment) {
       escapeHTML(comment.content)}</p></div></div>`;
 }
 
+/** Escape text before inserting it into HTML. */
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, char => ({
                                              '&': '&amp;',
@@ -1290,6 +1333,7 @@ function escapeHTML(value) {
                                            }[char]));
 }
 
+/** Toggle a post discussion and focus its comment field. */
 function focusPostComment(postId) {
   const card = document.querySelector(`[data-post-id="${postId}"]`);
   const discussion = card?.querySelector('.post-discussion');
@@ -1299,7 +1343,8 @@ function focusPostComment(postId) {
   const shouldOpen = discussion.hidden;
   discussion.hidden = !shouldOpen;
   trigger.setAttribute('aria-expanded', String(shouldOpen));
-  trigger.setAttribute('aria-label', shouldOpen ? 'Hide comments' : 'Show comments');
+  trigger.setAttribute(
+      'aria-label', shouldOpen ? 'Hide comments' : 'Show comments');
   const label = trigger.querySelector('.comment-action-label');
   if (label) label.textContent = shouldOpen ? 'Hide comments' : 'Comment';
 
@@ -1310,6 +1355,7 @@ function focusPostComment(postId) {
   }
 }
 
+/** Add a comment and refresh the post. */
 function submitPostComment(event, postId) {
   event.preventDefault();
   const post = posts.find(item => item.id === postId);
@@ -1485,11 +1531,13 @@ function executeShare(postId) {
       'success');
 }
 
+/** Apply a theme to the document and controls. */
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   localStorage.setItem('zd_theme', theme);
   syncThemeSwitches(theme);
 }
+/** Keep all theme switches in sync. */
 function syncThemeSwitches(theme = document.documentElement.dataset.theme) {
   document.querySelectorAll('.theme-switch').forEach(toggle => {
     const isLight = theme === 'light';
@@ -1500,6 +1548,7 @@ function syncThemeSwitches(theme = document.documentElement.dataset.theme) {
           isLight ? 'bi-sun-fill' : 'bi-moon-stars-fill'}"></i>`;
   });
 }
+/** Toggle and persist the selected theme. */
 function toggleTheme() {
   applyTheme(
       document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
@@ -1511,75 +1560,20 @@ if (!document.querySelector('link[rel="icon"]')) {
   const favicon = document.createElement('link');
   favicon.rel = 'icon';
   favicon.type = 'image/png';
-  favicon.href = 'assets/icons/ZeroDay-Logo.png';
+  favicon.sizes = '96x96';
+  favicon.href = '../assets/icons/favicon.png';
   document.head.append(favicon);
 }
 
-const loadedPageScripts = new Set();
-async function navigateTo(url, addHistory = true) {
+/** Navigate within the application. */
+function navigateTo(url) {
   const target = new URL(url, location.href);
-  if (target.origin !== location.origin ||
-      (target.pathname === location.pathname &&
-       target.search === location.search))
-    return;
-
-  if (location.protocol === 'file:' || !window.fetch) {
-    if (addHistory) history.pushState({}, '', target.href);
-    window.location.assign(target.href);
-    return;
-  }
-
-  try {
-    const response = await fetch(target.href);
-    if (!response.ok) throw new Error('Page unavailable');
-    const parsed =
-        new DOMParser().parseFromString(await response.text(), 'text/html');
-    document.title = parsed.title;
-    window.dispatchEvent(new Event('zd:route-change'));
-    document.body.className = parsed.body.className;
-    document.body.replaceChildren(
-        ...Array.from(parsed.body.children)
-            .filter(el => el.tagName !== 'SCRIPT')
-            .map(el => document.importNode(el, true)));
-    document.querySelectorAll('[data-route-style]').forEach(el => el.remove());
-    parsed.querySelectorAll('style').forEach(el => {
-      const style = document.createElement('style');
-      style.dataset.routeStyle = 'true';
-      style.textContent = el.textContent;
-      document.head.append(style);
-    });
-    if (addHistory) history.pushState({}, '', target.href);
-    const pageScript =
-        Array.from(parsed.scripts)
-            .map(script => script.getAttribute('src'))
-            .find(src => src && src.startsWith('js/') && src !== 'js/app.js');
-    if (pageScript && !loadedPageScripts.has(pageScript)) {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = pageScript;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.body.append(script);
-      });
-      loadedPageScripts.add(pageScript);
-    }
-    const inlineKey = `${target.pathname}#inline`;
-    if (!loadedPageScripts.has(inlineKey)) {
-      parsed.querySelectorAll('script:not([src])').forEach(original => {
-        const script = document.createElement('script');
-        script.textContent = original.textContent;
-        document.body.append(script);
-      });
-      loadedPageScripts.add(inlineKey);
-    }
-    syncThemeSwitches();
-    document.dispatchEvent(new Event('zd:page-ready'));
-    window.scrollTo(0, 0);
-  } catch (error) {
-    if (addHistory) history.pushState({}, '', target.href);
-    window.location.assign(target.href);
+  if (target.origin === location.origin && target.href !== location.href) {
+    document.documentElement.classList.add('zd-is-loading');
+    window.location.href = target.href;
   }
 }
+
 document.addEventListener('click', event => {
   const link = event.target.closest('a[href]');
   if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey ||
@@ -1587,12 +1581,9 @@ document.addEventListener('click', event => {
       link.hasAttribute('download'))
     return;
   const target = new URL(link.href, location.href);
-  if (target.origin === location.origin && /\.html$/.test(target.pathname)) {
-    event.preventDefault();
-    navigateTo(target.href);
-  }
+  if (target.origin === location.origin && target.href !== location.href)
+    document.documentElement.classList.add('zd-is-loading');
 });
-window.addEventListener('popstate', () => navigateTo(location.href, false));
 
 // ---- Ephemeral multi-window realtime updates ----
 let realtimeSocket = null;
@@ -1600,6 +1591,7 @@ let realtimeReconnectTimer = null;
 let realtimeUnavailableNoticeShown = false;
 const pendingRealtimeEvents = [];
 
+/** Connect this signed-in session to the WebSocket relay. */
 function connectRealtime() {
   if (!sessionStorage.getItem('zd_logged_in')) {
     if (realtimeSocket) realtimeSocket.close();
@@ -1615,7 +1607,8 @@ function connectRealtime() {
   const scheme = location.protocol === 'https:' ? 'wss:' : 'ws:';
   const isLocalPreview =
       location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  const socketHost = isLocalPreview ? `${location.hostname}:3000` : location.host;
+  const socketHost =
+      isLocalPreview ? `${location.hostname}:3000` : location.host;
   const url = `${scheme}//${socketHost}/realtime?userId=${getCurrentUser().id}`;
   realtimeSocket = new WebSocket(url);
   realtimeSocket.addEventListener('open', () => {
@@ -1637,7 +1630,9 @@ function connectRealtime() {
   realtimeSocket.addEventListener('close', () => {
     if (sessionStorage.getItem('zd_logged_in')) {
       if (!realtimeUnavailableNoticeShown) {
-        showToast('Live updates are offline. Start ZeroDay with npm start.', 'warning');
+        showToast(
+            'Live updates are offline. Start ZeroDay with npm start.',
+            'warning');
         realtimeUnavailableNoticeShown = true;
       }
       clearTimeout(realtimeReconnectTimer);
@@ -1647,6 +1642,7 @@ function connectRealtime() {
   realtimeSocket.addEventListener('error', () => realtimeSocket.close());
 }
 
+/** Send an event through the relay or queue it until connected. */
 function sendRealtimeEvent(event) {
   if (!sessionStorage.getItem('zd_logged_in')) return;
   const payload = {...event, actorId: getCurrentUser().id};
@@ -1658,13 +1654,15 @@ function sendRealtimeEvent(event) {
   }
 }
 
+/** Apply an update received from another session. */
 function applyRealtimeEvent(event) {
   if (!event || !event.type) return;
   if (event.type === 'post:create' && event.post) {
     if (posts.some(post => post.id === event.post.id)) return;
     const post = {...event.post, timestamp: new Date(event.post.timestamp)};
     posts.unshift(post);
-    if (typeof renderFeed === 'function' && document.getElementById('signals-feed'))
+    if (typeof renderFeed === 'function' &&
+        document.getElementById('signals-feed'))
       renderFeed(typeof currentFilter === 'undefined' ? 'all' : currentFilter);
     return;
   }
@@ -1683,7 +1681,8 @@ function applyRealtimeEvent(event) {
     const post = posts.find(item => item.id === event.postId);
     if (!post) return;
     post.comments = post.comments || seedPostComments(post.id);
-    post.comments.unshift({...event.comment, timestamp: new Date(event.comment.timestamp)});
+    post.comments.unshift(
+        {...event.comment, timestamp: new Date(event.comment.timestamp)});
     const card = document.querySelector(`[data-post-id="${post.id}"]`);
     const wasOpen = card && !card.querySelector('.post-discussion')?.hidden;
     if (card) {
@@ -1697,9 +1696,12 @@ function applyRealtimeEvent(event) {
 
   if (event.type === 'message:send' && event.message) {
     if (messages.some(message => message.id === event.message.id)) return;
-    messages.push({...event.message, timestamp: new Date(event.message.timestamp)});
-    if (typeof renderChannelsList === 'function' && document.getElementById('channels-list'))
-      renderChannelsList(document.getElementById('channel-search')?.value || '');
+    messages.push(
+        {...event.message, timestamp: new Date(event.message.timestamp)});
+    if (typeof renderChannelsList === 'function' &&
+        document.getElementById('channels-list'))
+      renderChannelsList(
+          document.getElementById('channel-search')?.value || '');
     if (typeof currentActiveChatUserId !== 'undefined' &&
         Number(currentActiveChatUserId) === event.message.fromId &&
         typeof renderChatMessages === 'function')
@@ -1708,30 +1710,79 @@ function applyRealtimeEvent(event) {
         typeof currentActiveChatUserId !== 'undefined' &&
         Number(currentActiveChatUserId) !== event.message.fromId &&
         document.getElementById('messaging-workspace'))
-      showToast(`New message from ${getUserById(event.message.fromId)?.name || 'a connection'}.`, 'info');
+      showToast(
+          `New message from ${
+              getUserById(event.message.fromId)?.name || 'a connection'}.`,
+          'info');
     return;
   }
 
   if (event.type === 'connection:request' && event.request) {
-    const request = {...event.request, timestamp: new Date(event.request.timestamp)};
-    if (connectionRequests.some(item => item.fromId === request.fromId && item.toId === request.toId && item.status === 'pending'))
+    const request = {
+      ...event.request,
+      timestamp: new Date(event.request.timestamp)
+    };
+    if (connectionRequests.some(
+            item => item.fromId === request.fromId &&
+                item.toId === request.toId && item.status === 'pending'))
       return;
     connectionRequests.push(request);
     if (typeof updatePendingBadge === 'function') updatePendingBadge();
-    if (typeof renderPending === 'function' && document.getElementById('tab-pending')) renderPending();
+    if (typeof renderPending === 'function' &&
+        document.getElementById('tab-pending'))
+      renderPending();
     if (request.toId === getCurrentUser().id)
-      showToast(`${getUserById(request.fromId)?.name || 'A member'} sent you a connection request.`, 'info');
+      showToast(
+          `${
+              getUserById(request.fromId)?.name ||
+              'A member'} sent you a connection request.`,
+          'info');
   }
 }
 
 document.addEventListener('zd:page-ready', connectRealtime);
 
-setTimeout(() => {
-  document.querySelectorAll('script[src^="js/"]').forEach(script => {
-    if (script.getAttribute('src') !== 'js/app.js')
-      loadedPageScripts.add(script.getAttribute('src'));
-  });
-  if (document.querySelector('script:not([src])'))
-    loadedPageScripts.add(`${location.pathname}#inline`);
+/** Initialize page-ready listeners and finish the loader. */
+function firePageReady() {
   document.dispatchEvent(new Event('zd:page-ready'));
-}, 0);
+  requestAnimationFrame(updatePageLoaderBounds);
+  const elapsed = performance.now() - pageLoaderStartedAt;
+  window.setTimeout(() => {
+    document.documentElement.classList.remove('zd-is-loading');
+  }, Math.max(0, 1000 - elapsed));
+}
+
+/** Place the page loader below the navigation bar. */
+function updatePageLoaderBounds() {
+  const navigation = document.querySelector('#nav-container .zd-topnav');
+  if (navigation) {
+    const bottom = Math.max(0, navigation.getBoundingClientRect().bottom);
+    pageLoader.style.setProperty('--zd-loader-top', `${bottom}px`);
+  }
+}
+
+const pageLoaderStartedAt = performance.now();
+const pageLoader = document.createElement('div');
+pageLoader.className = 'zd-page-loader';
+pageLoader.setAttribute('role', 'status');
+pageLoader.setAttribute('aria-live', 'polite');
+pageLoader.innerHTML = `
+  <div class="zd-page-loader-content">
+    <span class="zd-loader-globe" aria-hidden="true">
+      <span class="zd-loader-globe-meridian"></span>
+      <span class="zd-loader-globe-equator"></span>
+      <span class="zd-loader-globe-latitude"></span>
+    </span>
+    <span class="zd-loader-wordmark">ZER<span>0</span>DAY</span>
+    <span class="zd-loader-caption">Loading your community</span>
+  </div>
+`;
+document.body.append(pageLoader);
+document.documentElement.classList.add('zd-is-loading');
+window.addEventListener('resize', updatePageLoaderBounds, {passive: true});
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', firePageReady, {once: true});
+} else {
+  firePageReady();
+}

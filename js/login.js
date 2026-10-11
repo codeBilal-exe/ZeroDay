@@ -54,7 +54,8 @@ document.addEventListener('zd:page-ready', () => {
     if (!valid) return;
 
     // Authenticate against mock data
-    const user = users.find(u => u.username === username && u.password === password);
+    const user =
+        users.find(u => u.username === username && u.password === password);
 
     if (user) {
       // Login success
@@ -70,7 +71,8 @@ document.addEventListener('zd:page-ready', () => {
 
       // Update system status
       const status = document.getElementById('system-status');
-      status.innerHTML = '<span class="status-indicator"></span> AUTHENTICATED — REDIRECTING...';
+      status.innerHTML =
+          '<span class="status-indicator"></span> AUTHENTICATED — REDIRECTING...';
       status.style.color = 'var(--zd-action)';
 
       // Redirect after brief delay

@@ -917,11 +917,6 @@ a:hover {
   object-fit: cover;
   border: 2px solid var(--zd-border-light);
 }
-.avatar-icon {
-  padding: 2px;
-  background: var(--zd-action);
-}
-
 .avatar-xs {
   width: 24px;
   height: 24px;
@@ -1464,11 +1459,118 @@ a:hover {
   }
 }
 
-/* Zeroday's tactile glass surfaces: hard outlines, soft internal highlights,
-   and a shallow lifted edge keep the system legible in both themes. */
+/* Keep dialogs and their controls inside the viewport at every screen size. */
+.modal-dialog {
+  width: calc(100% - 1rem);
+  max-width: min(var(--bs-modal-width, 500px), calc(100vw - 1rem));
+  margin: .5rem auto;
+}
+
+.modal-content {
+  width: 100%;
+  min-width: 0;
+  max-height: calc(100vh - 1rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  max-height: calc(100dvh - 1rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  overflow: hidden;
+}
+
+.modal-header,
+.modal-body,
+.modal-footer {
+  min-width: 0;
+}
+
+.modal-header {
+  gap: .75rem;
+}
+
+.modal-title,
+.modal-body,
+.modal-body p,
+.modal-body label {
+  overflow-wrap: anywhere;
+}
+
+.modal-body {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+}
+
+.modal-footer > * {
+  margin: 0 !important;
+  max-width: 100%;
+}
+
+.modal input,
+.modal select,
+.modal textarea {
+  max-width: 100%;
+  min-width: 0;
+}
+
+#ratingModal .modal-dialog {
+  max-width: min(440px, calc(100vw - 1rem));
+}
+
+#ratingModal .modal-footer {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#ratingModal .modal-footer > button {
+  min-width: 0;
+  min-height: 46px;
+  padding-inline: .65rem;
+  white-space: normal;
+}
+
+#rating-options {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .55rem;
+  width: 100%;
+}
+
+#rating-options .rating-option {
+  justify-content: center;
+  min-width: 0;
+  min-height: 44px;
+  padding: .5rem .4rem;
+  font-size: clamp(.61rem, 2.7vw, .7rem);
+  letter-spacing: .02em;
+  text-align: center;
+  white-space: normal;
+}
+
+#rating-options .rating-option:last-child {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 420px) {
+  .modal-dialog {
+    width: calc(100% - .75rem);
+    margin: .375rem auto;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: .85rem;
+  }
+}
+
+/* Shared surface tokens. */
 :root {
   --zd-glass-highlight: color-mix(in srgb, var(--zd-text) 10%, transparent);
-  --zd-glass-shadow: color-mix(in srgb, var(--zd-text) 9%, transparent);
 }
 body {
   background:
@@ -2516,7 +2618,7 @@ img {
   }
 }
 
-/* Threat bulletin display and more tactile card surfaces */
+/* Threat cards. */
 .zd-panel,
 .signal-card,
 .learn-card {
@@ -2693,7 +2795,7 @@ img {
   }
 }
 
-/* Keep the finish of the layered design consistent after theme and breakpoint overrides. */
+/* Shared surface finish. */
 .zd-topnav,
 .zd-panel,
 .signal-card,
@@ -2801,7 +2903,7 @@ img {
   }
 }
 
-/* Post layout aligned to the compact editorial feed reference. */
+/* Post layout. */
 .post-card-heading {
   display: flex;
   align-items: center;
@@ -2824,16 +2926,30 @@ img {
 .post-heading-tools .signal-meta {
   justify-content: flex-end;
   flex-wrap: wrap;
+  gap: 0.3rem;
   margin: 0;
 }
 .post-card .signal-category,
 .post-card .signal-risk {
   display: inline-flex;
   align-items: center;
-  gap: 0.28rem;
-  padding: 0.18rem 0.45rem;
-  font-size: 0.58rem;
-  letter-spacing: 0.06em;
+  gap: 0.2rem;
+  padding: 0.12rem 0.34rem;
+  border: 1px solid color-mix(in srgb, var(--zd-border) 65%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--zd-surface-alt) 58%, transparent);
+  color: var(--zd-muted);
+  font-size: 0.5rem;
+  letter-spacing: 0.025em;
+  line-height: 1.25;
+  opacity: 0.78;
+}
+.post-card .signal-risk {
+  color: color-mix(in srgb, var(--zd-muted) 58%, var(--zd-warning));
+}
+.post-card .signal-category > i,
+.post-card .signal-risk > i {
+  font-size: 0.55em;
 }
 .post-author-handle {
   font-size: 0.67rem;
@@ -2945,6 +3061,31 @@ img {
 .post-comment-form {
   margin-top: 0.7rem;
 }
+@media (min-width: 1024px) {
+  .zd-main.home-main {
+    max-width: 1500px;
+  }
+  .post-actions {
+    flex-wrap: nowrap;
+    gap: 0.3rem;
+  }
+  .post-action-group {
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+  }
+  .post-action-group .reaction-btn,
+  .post-action-group .btn-zd-secondary {
+    gap: 0.28rem;
+    min-height: 36px;
+    padding-inline: 0.34rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.015em;
+    white-space: nowrap;
+  }
+  .post-action-group .reaction-count {
+    font-size: 0.56rem;
+  }
+}
 @media (max-width: 560px) {
   .post-card-heading {
     align-items: flex-start;
@@ -2957,7 +3098,7 @@ img {
   }
   .post-card .signal-category,
   .post-card .signal-risk {
-    font-size: 0.52rem;
+    font-size: 0.46rem;
   }
   .post-actions {
     align-items: stretch;
@@ -2975,7 +3116,7 @@ img {
   }
 }
 
-/* Keep inherited legacy states on the same cool slate and blue palette. */
+/* Selection and navigation states. */
 ::selection {
   background: color-mix(in srgb, var(--zd-action) 28%, transparent);
 }
@@ -3043,7 +3184,7 @@ img {
     );
 }
 
-/* Day/night slider used in navigation, login, and profile preferences. */
+/* Theme switch. */
 .theme-switch {
   position: relative;
   display: inline-flex;
@@ -3222,7 +3363,7 @@ img {
   }
 }
 
-/* Floating ZeroDay navigation */
+/* Main navigation. */
 .zd-topnav {
   position: sticky;
   top: 0;
@@ -3579,7 +3720,7 @@ img {
   min-width: 0;
 }
 #signals-feed > .post-card .post-actions {
-  margin-top: auto;
+  margin-top: 0.85rem;
 }
 #signals-feed .post-discussion[hidden] {
   display: none;
@@ -4108,6 +4249,225 @@ img {
   }
 }
 
+/* Profile layout. */
+.profile-hero {
+  position: relative;
+  padding: 1.5rem 1.5rem 1.15rem;
+  border-color: color-mix(in srgb, var(--zd-action) 18%, var(--zd-border));
+  background:
+    radial-gradient(
+      ellipse at 8% 0%,
+      color-mix(in srgb, var(--zd-action) 12%, transparent),
+      transparent 30rem
+    ),
+    radial-gradient(
+      ellipse at 100% 12%,
+      color-mix(in srgb, var(--zd-highlight) 8%, transparent),
+      transparent 25rem
+    ),
+    var(--zd-surface);
+}
+
+.profile-hero::before {
+  position: absolute;
+  top: 0;
+  left: 1.5rem;
+  width: 4.5rem;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  background: var(--zd-action);
+  content: "";
+}
+
+.profile-hero-main {
+  min-width: 0;
+  padding: .35rem 0 1.25rem;
+}
+
+.profile-identity {
+  flex: 1 1 20rem;
+  gap: 1.25rem;
+}
+
+.profile-meta {
+  flex: 1;
+}
+
+.profile-eyebrow {
+  display: inline-block;
+  margin-bottom: .15rem;
+  color: var(--zd-action);
+  letter-spacing: .14em;
+}
+
+.profile-avatar-wrap .avatar-xl {
+  border-color: var(--zd-surface);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--zd-action) 42%, var(--zd-border)),
+    0 10px 24px rgba(0, 0, 0, .16);
+}
+
+.profile-about-inline {
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--zd-border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--zd-surface-alt) 62%, transparent);
+}
+
+.profile-about-inline .zd-panel-header {
+  align-items: center;
+}
+
+.profile-bio {
+  max-width: 78ch;
+}
+
+.profile-stat-grid {
+  gap: .55rem;
+  margin-top: 1rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--zd-border);
+}
+
+.profile-stat,
+.profile-stat + .profile-stat {
+  align-items: flex-start;
+  min-width: 0;
+  padding: .75rem .9rem;
+  border: 1px solid var(--zd-border);
+  background: color-mix(in srgb, var(--zd-surface-alt) 56%, transparent);
+  text-align: left;
+}
+
+.profile-stat-value {
+  color: var(--zd-action);
+  font-size: 1.4rem;
+}
+
+.profile-stat-label {
+  line-height: 1.35;
+}
+
+.profile-content-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+  gap: 1rem;
+}
+
+.profile-main-column,
+.profile-sidebar {
+  gap: 1rem;
+}
+
+.profile-section {
+  padding: 1.15rem;
+  border-radius: 16px;
+}
+
+.profile-section .zd-panel-header {
+  gap: .75rem;
+}
+
+.profile-connection {
+  border-radius: 11px;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.profile-connection:hover,
+.profile-connection:focus-visible {
+  background: color-mix(in srgb, var(--zd-action) 7%, var(--zd-surface));
+}
+
+.profile-connection:focus-visible {
+  outline: 2px solid var(--zd-action);
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .profile-content-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 285px);
+  }
+}
+
+@media (max-width: 760px) {
+  .profile-content-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .profile-sidebar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #profile-connections {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .profile-page {
+    padding: .75rem .75rem 2rem;
+  }
+
+  .profile-hero {
+    padding: 1.1rem 1rem .85rem;
+  }
+
+  .profile-hero::before {
+    left: 1rem;
+  }
+
+  .profile-hero-main {
+    gap: .9rem;
+    padding-top: .2rem;
+  }
+
+  .profile-identity {
+    flex-basis: auto;
+    gap: .75rem;
+  }
+
+  .profile-identity-details {
+    row-gap: .3rem;
+  }
+
+  .profile-last-active {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .profile-about-inline {
+    margin-top: .85rem;
+    padding: .85rem;
+  }
+
+  .profile-stat-grid {
+    gap: .45rem;
+    padding-top: .8rem;
+  }
+
+  .profile-stat,
+  .profile-stat + .profile-stat {
+    min-height: 68px;
+    padding: .55rem .65rem;
+  }
+
+  .profile-stat-value {
+    font-size: 1.2rem;
+  }
+
+  .profile-sidebar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #profile-connections {
+    grid-column: auto;
+  }
+
+  .profile-section {
+    padding: .95rem;
+  }
+}
+
 .zd-toast {
   position: fixed;
   z-index: 1300;
@@ -4236,4 +4596,184 @@ img {
 }
 .brand-zero {
   color: var(--zd-action);
+}
+
+/* Keep the message shortcut compact until a desktop user points to it. */
+.messages-fab {
+  width: 52px;
+  min-width: 52px;
+  height: 52px;
+  min-height: 52px;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+  border-radius: 50%;
+  transition:
+    width 320ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    min-width 320ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    padding 320ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    border-radius 320ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    gap 320ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+.messages-fab > span {
+  display: block;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+  transition:
+    max-width 300ms cubic-bezier(0.2, 0.75, 0.25, 1),
+    opacity 220ms ease;
+}
+.messages-fab:hover,
+.messages-fab:focus-visible {
+  width: 176px;
+  min-width: 176px;
+  justify-content: flex-start;
+  gap: 0.55rem;
+  padding-inline: 0.85rem;
+  border-radius: 12px;
+}
+.messages-fab:hover > span,
+.messages-fab:focus-visible > span {
+  max-width: 120px;
+  opacity: 1;
+}
+.messages-fab-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+}
+
+/* Reaction state colors use the same semantic colors as the rest of the UI. */
+.post-actions .reaction-btn.active-useful {
+  border-color: var(--color-success);
+  color: var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 14%, transparent);
+}
+.post-actions .reaction-btn.active-useful .reaction-count {
+  color: var(--color-success);
+}
+.post-actions .reaction-btn.active-not-useful {
+  border-color: var(--zd-error);
+  color: var(--zd-error);
+  background: color-mix(in srgb, var(--zd-error) 13%, transparent);
+}
+.post-actions .reaction-btn.active-not-useful .reaction-count {
+  color: var(--zd-error);
+}
+
+.post-card:hover {
+  border-color: var(--zd-action);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--zd-action) 30%, transparent),
+    0 6px 0 color-mix(in srgb, var(--zd-border) 72%, transparent),
+    0 21px 34px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 color-mix(in srgb, var(--zd-text) 14%, transparent);
+}
+
+@media (max-width: 640px) {
+  .messages-fab:hover,
+  .messages-fab:focus-visible {
+    width: 52px;
+    min-width: 52px;
+    justify-content: center;
+    gap: 0;
+    padding: 0;
+    border-radius: 50%;
+  }
+  .messages-fab > span {
+    display: none;
+  }
+}
+
+.zd-page-loader {
+  position: fixed;
+  inset: var(--zd-loader-top, 0px) 0 0;
+  z-index: 5000;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: var(--zd-desktop);
+  color: var(--zd-text);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 200ms ease, visibility 0s linear 200ms;
+}
+
+html.zd-is-loading .zd-topnav {
+  z-index: 5001;
+}
+
+html:not(.zd-is-loading) .zd-page-loader {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.zd-page-loader-content {
+  display: grid;
+  justify-items: center;
+  gap: .7rem;
+  text-align: center;
+}
+
+.zd-loader-globe {
+  position: relative;
+  display: block;
+  width: 68px;
+  height: 68px;
+  overflow: hidden;
+  border: 1.5px solid var(--zd-action);
+  border-radius: 50%;
+  color: var(--zd-action);
+  animation: zd-globe-turn 1.1s linear infinite;
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--zd-action) 8%, transparent);
+}
+
+.zd-loader-globe-meridian,
+.zd-loader-globe-equator,
+.zd-loader-globe-latitude {
+  position: absolute;
+  display: block;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.zd-loader-globe-meridian {
+  inset: -1px 17px;
+}
+
+.zd-loader-globe-equator {
+  inset: 17px -1px;
+}
+
+.zd-loader-globe-latitude {
+  inset: 7px 2px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.zd-loader-wordmark {
+  font: 700 1.05rem/1 var(--font-heading);
+  letter-spacing: .16em;
+}
+
+.zd-loader-wordmark span {
+  color: var(--zd-action);
+}
+
+.zd-loader-caption {
+  color: var(--zd-muted);
+  font: 500 .72rem/1.4 var(--font-body);
+}
+
+@keyframes zd-globe-turn {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zd-loader-globe {
+    animation: none;
+  }
 }
